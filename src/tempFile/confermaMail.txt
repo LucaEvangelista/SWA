@@ -1,0 +1,199 @@
+[ 2026-06-07T00:14:20.892482 ]  dom@mail.com:
+--------------------------------- SoccorsoWeb ----------------------------------
+Gentile dom,
+per poter procedere alla risoluzione della sua richiesta clicchi qui: 
+http://localhost:8080/soccorso_Web/con?uuid=dab5ab40-baac-4086-b49b-34472e349dbd
+grazie.
+--------------------------------- SoccorsoWeb ----------------------------------
+
+
+
+
+
+
+
+[ 2026-06-07T00:31:14.060139 ]  dom@mail.com:
+--------------------------------- SoccorsoWeb ----------------------------------
+Gentile dom,
+per poter procedere alla risoluzione della sua richiesta clicchi qui: 
+http://localhost:8080/soccorso_Web/con?uuid=f423b73c-5f09-4aa2-b936-3b10ec11cd04
+grazie.
+--------------------------------- SoccorsoWeb ----------------------------------
+
+
+
+
+
+
+
+[ 2026-06-10T18:02:12.896824 ]  mariomario@mail.com:
+--------------------------------- SoccorsoWeb ----------------------------------
+richiesta: 0
+Gentile mario rossi,
+per poter procedere alla risoluzione della sua richiesta clicchi qui: 
+http://localhost:8080/soccorso_Web/con?uuid=421608d4-0076-492f-86ca-56f005b1cc5a
+grazie.
+--------------------------------- SoccorsoWeb ----------------------------------
+
+
+
+
+
+
+
+[ 2026-06-10T22:46:29.954083 ]  loredi@mail.com:
+--------------------------------- SoccorsoWeb ----------------------------------
+richiesta: 0
+Gentile lorenzo di natale,
+per poter procedere alla risoluzione della sua richiesta clicchi qui: 
+http://localhost:8080/soccorso_Web/con?uuid=e63b3584-8c34-49d9-85c4-d9225fdd4825
+grazie.
+--------------------------------- SoccorsoWeb ----------------------------------
+
+
+
+
+
+
+
+[ 2026-06-12T14:48:25.705623 ]  malu@mail.com:
+--------------------------------- SoccorsoWeb ----------------------------------
+richiesta: 0
+Gentile mario luigi,
+per poter procedere alla risoluzione della sua richiesta clicchi qui: 
+http://localhost:8080/soccorso_Web/con?uuid=908e49ad-1f4e-40b7-a41f-d4387b46818f
+grazie.
+--------------------------------- SoccorsoWeb ----------------------------------
+
+
+
+
+
+
+
+[ 2026-06-15T11:28:08.255427 ]  lucaeva@mail.com:
+--------------------------------- SoccorsoWeb ----------------------------------
+Gentile Luca Evangelista,
+per poter procedere alla risoluzione della sua richiesta clicchi qui: 
+http://localhost:8080/soccorso_Web/con?uuid=3a7f429c-e27e-43de-9451-1b44e56b6ad1
+grazie.
+--------------------------------- SoccorsoWeb ----------------------------------
+
+
+
+
+
+
+
+[ 2026-06-16T12:06:24.383314 ]  lisa.eva@mail.com:
+--------------------------------- SoccorsoWeb ----------------------------------
+Gentile Lisa Evangelista,
+per poter procedere alla risoluzione della sua richiesta clicchi qui: 
+http://localhost:8080/soccorso_Web/con?uuid=5ef5aff2-0d92-4bb7-878d-3836b895c689
+grazie.
+--------------------------------- SoccorsoWeb ----------------------------------
+
+
+
+
+
+
+
+[ 2026-06-16T12:08:41.588805 ]  lisa.eva@mail.com:
+--------------------------------- SoccorsoWeb ----------------------------------
+Gentile gfchvjkl,
+per poter procedere alla risoluzione della sua richiesta clicchi qui: 
+http://localhost:8080/soccorso_Web/con?uuid=65723bb5-c0e7-4f3d-8151-964b1c468c5e
+grazie.
+--------------------------------- SoccorsoWeb ----------------------------------
+
+
+
+
+
+
+
+[ 2026-06-16T12:09:50.213103 ]  luca.eva@mail.com:
+--------------------------------- SoccorsoWeb ----------------------------------
+Gentile luca evanelista,
+per poter procedere alla risoluzione della sua richiesta clicchi qui: 
+http://localhost:8080/soccorso_Web/con?uuid=faba2440-3c71-4434-87c9-02cb758a16ff
+grazie.
+--------------------------------- SoccorsoWeb ----------------------------------
+
+
+
+
+
+
+
+[ 2026-06-16T12:12:05.509613 ]  lisa.eva@mail.com:
+--------------------------------- SoccorsoWeb ----------------------------------
+Gentile lisa evangelista,
+per poter procedere alla risoluzione della sua richiesta clicchi qui: 
+http://localhost:8080/soccorso_Web/con?uuid=d9b76198-a3c5-44a1-9b3f-57be017dc677
+grazie.
+--------------------------------- SoccorsoWeb ----------------------------------
+
+
+
+
+
+
+
+[ 2026-06-16T14:41:51.483444 ]  luca.eva@mail.com:
+--------------------------------- SoccorsoWeb ----------------------------------
+Gentile Luca Evangelista,
+per poter procedere alla risoluzione della sua richiesta clicchi qui: 
+http://localhost:8080/soccorso_Web/con?uuid=38d6cd01-8e3a-4211-a0a4-29f8b8f97e5b
+grazie.
+--------------------------------- SoccorsoWeb ----------------------------------
+
+
+
+
+
+
+
+[ 2026-07-08T11:25:35.214478 ]  barbablu69@mail.com:
+--------------------------------- SoccorsoWeb ----------------------------------
+Gentile barba blu,
+per poter procedere alla risoluzione della sua richiesta clicchi qui: 
+http://localhost:8080/soccorso_Web_SWA/viste/NuovaRichiesta.html?uuid=s0fc29820-5ff4-432f-bc3a-3bba79efe57c
+grazie.
+--------------------------------- SoccorsoWeb ----------------------------------
+
+
+
+
+
+
+
+[ 2026-07-09T21:48:47.329825 ]  maestro@mail.com:
+--------------------------------- SoccorsoWeb ----------------------------------
+Gentile donatello,
+per poter procedere alla risoluzione della sua richiesta clicchi qui: 
+http://localhost:8080/soccorso_Web_SWA/viste/NuovaRichiesta.html?uuid=62ae1bf2-0fba-44dc-a7ba-d705195e78da
+grazie.
+--------------------------------- SoccorsoWeb ----------------------------------
+
+
+
+
+
+
+
+[ 2026-07-09T21:50:22.148474 ]  scemo@mail.com:
+--------------------------------- SoccorsoWeb ----------------------------------
+Gentile raffaello,
+per poter procedere alla risoluzione della sua richiesta clicchi qui: 
+http://localhost:8080/soccorso_Web_SWA/viste/NuovaRichiesta.html?uuid=48c0bafd-8897-4bb6-bb56-9af25b49a14e
+grazie.
+--------------------------------- SoccorsoWeb ----------------------------------
+
+
+
+
+
+
+

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Dettaglio Operatore</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="container mt-4">
+
+    <h1>Dettaglio Operatore</h1>
+
+    <div id="messaggio-errore" class="text-danger mb-3"></div>
+
+    <div class="card">
+        <div class="card-body">
+            <p><strong>Nome:</strong> <span id="op-name"></span></p>
+            <p><strong>Cognome:</strong> <span id="op-surname"></span></p>
+            <p><strong>Email:</strong> <span id="op-email"></span></p>
+            <p><strong>Data di nascita:</strong> <span id="op-age"></span></p>
+        </div>
+    </div>
+    
+	<hr>
+	
+<h1>Patenti Operatore</h1>
+
+<div id="messaggio-patenti" class="mb-3"></div>
+
+<div class="card mb-3">
+    <div class="card-header">
+        Aggiungi patente
+    </div>
+
+    <div class="card-body">
+        <div class="row g-2">
+            <div class="col-md-8">
+                <select id="select-patenti" class="form-select">
+                    <option value="">Caricamento patenti...</option>
+                </select>
+            </div>
+
+            <div class="col-md-4">
+                <button type="button" class="btn btn-primary w-100" onclick="aggiungiPatenteSelezionata()">
+                    Aggiungi patente
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <ul id="lista-patenti" class="list-group">
+            <!-- Qui verranno inserite le patenti -->
+        </ul>
+    </div>
+</div>
+    
+	<hr>
+	
+	<h1>Abilità Operatore</h1>
+	
+    <div class="card">
+        <div class="card-body">
+	        <ul id="lista-abilita" class="list-group">
+	            <!-- Qui verranno inserite le abilità -->
+	        </ul>
+        </div>
+    </div>
+    
+    <hr>
+
+<h1>Storico Missioni</h1>
+
+<div class="card">
+    <div class="card-body">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Obiettivo</th>
+                    <th>Posizione</th>
+                </tr>
+            </thead>
+
+            <tbody id="corpo-storico-missioni">
+                <!-- Qui verranno inserite le missioni -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+    <a href="ListaOperatori.html" class="btn btn-secondary mt-3">Torna alla lista</a>
+
+    <script src="/soccorso_Web_SWA/js/SWAscript/DettaglioOperatore.js"></script>
+
+</body>
+</html>
