@@ -29,7 +29,19 @@ public class RichiesteRes {
 	@Path("list")
 	@Logged
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response listaRichieste() {
+	public Response listaRichieste(@Context SecurityContext securityContext) {
+		
+	    try {
+	    	
+			if (!securityContext.isUserInRole("admin")) {
+			    return Response.status(Response.Status.FORBIDDEN)
+			            .entity(new ErrorResponse("Non hai i permessi per visualizzare la richiesta selezionata"))
+			            .build();
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		List<Request> richieste = serviceR.findAllNotPending();
 		
@@ -119,8 +131,21 @@ public class RichiesteRes {
 	
 	@PUT
 	@Path("{id:[0-9]+}/rifiutata")
+	@Logged
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response rifiutaRichiesta(@PathParam("id") int id) {
+	public Response rifiutaRichiesta(@PathParam("id") int id, @Context SecurityContext securityContext) {
+		
+	    try {
+	    	
+			if (!securityContext.isUserInRole("admin")) {
+			    return Response.status(Response.Status.FORBIDDEN)
+			            .entity(new ErrorResponse("Non hai i permessi per visualizzare la richiesta selezionata"))
+			            .build();
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		Request rq = serviceR.findById(id);
 		
@@ -149,8 +174,21 @@ public class RichiesteRes {
 	
 	@PUT
 	@Path("{id:[0-9]+}/lavorazione")
+	@Logged
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response richiestaInLavorazione(@PathParam("id") int id) {
+	public Response richiestaInLavorazione(@PathParam("id") int id, @Context SecurityContext securityContext) {
+		
+	    try {
+	    	
+			if (!securityContext.isUserInRole("admin")) {
+			    return Response.status(Response.Status.FORBIDDEN)
+			            .entity(new ErrorResponse("Non hai i permessi per visualizzare la richiesta selezionata"))
+			            .build();
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		Request rq = serviceR.findById(id);
 		

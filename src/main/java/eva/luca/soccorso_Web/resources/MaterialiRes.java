@@ -5,23 +5,40 @@ import java.util.List;
 import eva.luca.soccorso_Web.data.MaterialeDao;
 import eva.luca.soccorso_Web.models.ErrorResponse;
 import eva.luca.soccorso_Web.models.Materiale;
+import eva.luca.soccorso_Web.utility.Logged;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.SecurityContext;
 
 @Path("materiali")
+@Logged
 public class MaterialiRes {
 	private final MaterialeDao serviceMt = new MaterialeDao();
 	
 	@GET
 	@Path("list")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response listaMateriali() {
+	public Response listaMateriali(@Context SecurityContext securityContext) {
+		
+	    try {
+	    	
+			if (!securityContext.isUserInRole("admin")) {
+			    return Response.status(Response.Status.FORBIDDEN)
+			            .entity(new ErrorResponse("Non hai i permessi per visualizzare la richiesta selezionata"))
+			            .build();
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	    
 		List<Materiale> materiali = serviceMt.findAll();
 		
 		return Response.ok(materiali).build();
@@ -30,7 +47,20 @@ public class MaterialiRes {
 	@GET
 	@Path("{id:[0-9]+}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getMezzoById(@PathParam("id") int id) {
+	public Response getMezzoById(@PathParam("id") int id, @Context SecurityContext securityContext) {
+		
+	    try {
+	    	
+			if (!securityContext.isUserInRole("admin")) {
+			    return Response.status(Response.Status.FORBIDDEN)
+			            .entity(new ErrorResponse("Non hai i permessi per visualizzare la richiesta selezionata"))
+			            .build();
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	    
 		Materiale mt = serviceMt.findById(id);
 		
 		if(mt == null) {
@@ -45,8 +75,20 @@ public class MaterialiRes {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response createMateriale(Materiale mt) {
+	public Response createMateriale(Materiale mt, @Context SecurityContext securityContext) {
 		
+	    try {
+	    	
+			if (!securityContext.isUserInRole("admin")) {
+			    return Response.status(Response.Status.FORBIDDEN)
+			            .entity(new ErrorResponse("Non hai i permessi per visualizzare la richiesta selezionata"))
+			            .build();
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	    
 		if(mt.getTipologia() == null || mt.getTipologia().isBlank()) {
 			return Response.status(Response.Status.BAD_REQUEST)
 					.entity(new ErrorResponse("you cannot leave type blank"))

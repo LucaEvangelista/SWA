@@ -4,6 +4,7 @@ import java.util.List;
 
 import eva.luca.soccorso_Web.data.SquadraDao;
 import eva.luca.soccorso_Web.models.Squadra;
+import eva.luca.soccorso_Web.utility.Logged;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
@@ -16,6 +17,7 @@ public class SquadreRes {
 	
 	@GET
 	@Path("list")
+	@Logged
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response listaSquadre() {
 		List<Squadra> squadre = serviceS.findSquadreNonOperative();

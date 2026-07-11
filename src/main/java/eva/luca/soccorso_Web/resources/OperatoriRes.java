@@ -8,20 +8,25 @@ import eva.luca.soccorso_Web.data.CompetenzeOperatoreDao;
 import eva.luca.soccorso_Web.data.MissioneDao;
 import eva.luca.soccorso_Web.data.OperatorDao;
 import eva.luca.soccorso_Web.data.PatenteOperatoreDao;
+import eva.luca.soccorso_Web.models.CompetenzeOperatore;
 import eva.luca.soccorso_Web.models.ErrorResponse;
 import eva.luca.soccorso_Web.models.Operator;
 import eva.luca.soccorso_Web.models.PatenteOperatore;
 import eva.luca.soccorso_Web.models.SuccessResponse;
+import eva.luca.soccorso_Web.utility.Logged;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.SecurityContext;
 
 @Path("operatori")
+@Logged
 public class OperatoriRes {
 	private final OperatorDao serviceO = new OperatorDao();
 	private final PatenteOperatoreDao servicePo = new PatenteOperatoreDao();
@@ -31,8 +36,20 @@ public class OperatoriRes {
 	@GET
 	@Path("list")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response listOperatori() {
-
+	public Response listOperatori(@Context SecurityContext securityContext) {
+		
+	    try {
+	    	
+			if (!securityContext.isUserInRole("admin")) {
+			    return Response.status(Response.Status.FORBIDDEN)
+			            .entity(new ErrorResponse("Non hai i permessi per visualizzare la richiesta selezionata"))
+			            .build();
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	    List<Operator> operatori = serviceO.findAll();
 
 	    return Response.ok(operatori)
@@ -46,6 +63,7 @@ public class OperatoriRes {
 	@Path("{id:[0-9]+}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getOperatoreById(@PathParam("id") int id) {
+		
 		Operator op = serviceO.findById(id);
 		
 		if(op == null) {
@@ -69,6 +87,7 @@ public class OperatoriRes {
 	@Path("{id:[0-9]+}/patenti")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getPatenteByOpId(@PathParam("id") int id) {
+		
 		Operator op = serviceO.findById(id);
 		
 		if(op == null) {
@@ -84,6 +103,7 @@ public class OperatoriRes {
 	@Path("{id:[0-9]+}/abilita")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAbilitaByOpId(@PathParam("id") int id) {
+		
 		Operator op = serviceO.findById(id);
 		
 		if(op == null) {
@@ -99,6 +119,7 @@ public class OperatoriRes {
 	@Path("{id:[0-9]+}/storico")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getStoricoByOpId(@PathParam("id") int id) {
+
 		Operator op = serviceO.findById(id);
 		
 		if(op == null) {
@@ -113,7 +134,19 @@ public class OperatoriRes {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response createOperator(Operator op) {
+	public Response createOperator(Operator op, @Context SecurityContext securityContext) {
+		
+	    try {
+	    	
+			if (!securityContext.isUserInRole("admin")) {
+			    return Response.status(Response.Status.FORBIDDEN)
+			            .entity(new ErrorResponse("Non hai i permessi per visualizzare la richiesta selezionata"))
+			            .build();
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		if(op.getName() == null || op.getName().isBlank()) {
             return Response.status(Response.Status.BAD_REQUEST)
@@ -173,6 +206,25 @@ public class OperatoriRes {
 	    return Response.ok()
 	            .entity(new SuccessResponse("Patente aggiunta all'operatore"))
 	            .build();
+	}
+	
+	@POST
+	@Path("abilita")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response addAbilitaToOperatore(CompetenzeOperatore co) {
+		
+		boolean inserito = serviceCo.insert(co);
+		
+		if (!inserito) {
+			return Response.status(Response.Status.BAD_REQUEST)
+					.entity(new ErrorResponse("Abilità non aggiunta all'operatore"))
+					.build();
+		}
+		
+		return Response.ok()
+				.entity(new SuccessResponse("Abilità aggiunta all'operatore"))
+				.build();
 	}
 	
 }

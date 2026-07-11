@@ -10,6 +10,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.jakarta.rs.json.JacksonJsonProvider;
 
 import eva.luca.soccorso_Web.resources.AuthRes;
+import eva.luca.soccorso_Web.resources.CompetenzeRes;
 import eva.luca.soccorso_Web.resources.ConvalidaRes;
 import eva.luca.soccorso_Web.resources.MaterialiRes;
 import eva.luca.soccorso_Web.resources.MezziRes;
@@ -45,6 +46,7 @@ public class RestApplication extends Application{
 		c.add(ConvalidaRes.class);
 		c.add(AuthRes.class);
 		c.add(AuthLoggedFilter.class);
+		c.add(CompetenzeRes.class);
 		
 //        aggiungiamo il provider Jackson per poter
 //        usare i suoi servizi di serializzazione e 

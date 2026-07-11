@@ -29,11 +29,13 @@ function caricaDettaglioOperatore() {
 	        console.log("JSON ricevuto:", data);
 			
 			mostraOperatore(data.Operatore);
+			
 			caricaPatenti(id);
 			caricaAbilita(id);
 			caricaStorico(id);
 			
 			caricaSelectPatenti(id);
+			caricaSelectAbilita(id);
 	    })
 	    .catch(function (errore) {
 	        console.error("Errore durante il caricamento del dettaglio:", errore);
@@ -244,6 +246,240 @@ function caricaSelectPatenti(operatoreId) {
    }
    
    /* ======================= FINE AGGIUNTA PATENTE ======================= */
+   /* ======================= SELECT PER AGGIUNGERE ABILITA ======================= */
+
+   function caricaSelectAbilita(operatoreId) {
+       var urlTutteAbilita = "/soccorso_Web_SWA/rest/abilita/list";
+       var urlAbilitaOperatore =
+           "/soccorso_Web_SWA/rest/operatori/" + operatoreId + "/abilita";
+
+       Promise.all([
+           fetch(urlTutteAbilita),
+           fetch(urlAbilitaOperatore)
+       ])
+           .then(function (responses) {
+               var responseTutte = responses[0];
+               var responseOperatore = responses[1];
+
+               if (!responseTutte.ok) {
+                   throw new Error(
+                       "Errore HTTP caricamento di tutte le abilità: "
+                       + responseTutte.status
+                   );
+               }
+
+               if (!responseOperatore.ok) {
+                   throw new Error(
+                       "Errore HTTP caricamento abilità operatore: "
+                       + responseOperatore.status
+                   );
+               }
+
+               return Promise.all([
+                   responseTutte.json(),
+                   responseOperatore.json()
+               ]);
+           })
+           .then(function (risultati) {
+               var tutteAbilita = risultati[0];
+               var abilitaOperatore = risultati[1];
+
+               var select = document.getElementById("select-abilita");
+
+               if (select === null) {
+                   console.error(
+                       "Elemento HTML con id 'select-abilita' non trovato."
+                   );
+                   return;
+               }
+
+               select.innerHTML = "";
+
+               var optionDefault = document.createElement("option");
+               optionDefault.value = "";
+               optionDefault.textContent = "Seleziona un'abilità";
+               select.appendChild(optionDefault);
+
+               /*
+                * Salviamo gli ID delle abilità che l'operatore
+                * possiede già.
+                */
+               var idAbilitaOperatore = new Set();
+
+               abilitaOperatore.forEach(function (abilita) {
+                   idAbilitaOperatore.add(Number(abilita.id));
+               });
+
+               /*
+                * Manteniamo solamente le abilità non ancora
+                * associate all'operatore.
+                */
+               var abilitaDisponibili = tutteAbilita.filter(function (abilita) {
+                   return !idAbilitaOperatore.has(Number(abilita.id));
+               });
+
+               if (abilitaDisponibili.length === 0) {
+                   var optionVuota = document.createElement("option");
+                   optionVuota.value = "";
+                   optionVuota.textContent = "Nessuna abilità disponibile";
+                   select.appendChild(optionVuota);
+                   return;
+               }
+
+               abilitaDisponibili.forEach(function (abilita) {
+                   var option = document.createElement("option");
+
+                   option.value = abilita.id;
+                   option.textContent = abilita.tipologia;
+
+                   select.appendChild(option);
+               });
+           })
+           .catch(function (errore) {
+               console.error(
+                   "Errore durante il caricamento della select abilità:",
+                   errore
+               );
+
+               var select = document.getElementById("select-abilita");
+
+               if (select !== null) {
+                   select.innerHTML =
+                       "<option value=''>Errore caricamento abilità</option>";
+               }
+           });
+   }
+
+   /* ======================= FINE SELECT ABILITA ======================= */
+
+
+   /* ======================= AGGIUNTA ABILITA ======================= */
+
+   function aggiungiAbilitaSelezionata() {
+       var parametri = new URLSearchParams(window.location.search);
+       var operatoreId = parametri.get("id");
+
+       var select = document.getElementById("select-abilita");
+
+       if (select === null) {
+           console.error(
+               "Elemento HTML con id 'select-abilita' non trovato."
+           );
+           return;
+       }
+
+       var abilitaId = select.value;
+
+       if (operatoreId === null || operatoreId === "") {
+           mostraMessaggioAbilita(
+               "ID operatore mancante nella URL.",
+               true
+           );
+           return;
+       }
+
+       if (abilitaId === null || abilitaId === "") {
+           mostraMessaggioAbilita(
+               "Seleziona un'abilità.",
+               true
+           );
+           return;
+       }
+
+       aggiungiAbilita(operatoreId, abilitaId);
+   }
+
+   function aggiungiAbilita(operatoreId, abilitaId) {
+       var url = "/soccorso_Web_SWA/rest/operatori/abilita";
+
+       var dati = {
+           abilitaRif: parseInt(abilitaId),
+           operatoreRif: parseInt(operatoreId)
+       };
+
+       fetch(url, {
+           method: "POST",
+           headers: {
+               "Content-Type": "application/json"
+           },
+           body: JSON.stringify(dati)
+       })
+           .then(function (response) {
+               if (!response.ok) {
+                   return response.json()
+                       .catch(function () {
+                           return null;
+                       })
+                       .then(function (erroreServer) {
+                           var messaggio =
+                               "Errore HTTP aggiunta abilità: "
+                               + response.status;
+
+                           if (
+                               erroreServer !== null
+                               && erroreServer.message !== undefined
+                           ) {
+                               messaggio = erroreServer.message;
+                           }
+
+                           throw new Error(messaggio);
+                       });
+               }
+
+               return response.json();
+           })
+           .then(function (data) {
+               console.log("Risposta aggiunta abilità:", data);
+
+               mostraMessaggioAbilita(
+                   "Abilità aggiunta correttamente.",
+                   false
+               );
+
+               document.getElementById("select-abilita").value = "";
+
+               /*
+                * Aggiorna sia la lista visibile sia la select,
+                * rimuovendo l'abilità appena assegnata.
+                */
+               caricaAbilita(operatoreId);
+               caricaSelectAbilita(operatoreId);
+           })
+           .catch(function (errore) {
+               console.error(
+                   "Errore durante l'aggiunta dell'abilità:",
+                   errore
+               );
+
+               mostraMessaggioAbilita(errore.message, true);
+           });
+   }
+
+   function mostraMessaggioAbilita(messaggio, errore) {
+       var contenitore =
+           document.getElementById("messaggio-abilita");
+
+       if (contenitore === null) {
+           console.error(
+               "Elemento HTML con id 'messaggio-abilita' non trovato."
+           );
+           return;
+       }
+
+       if (errore) {
+           contenitore.innerHTML =
+               "<div class='alert alert-danger'>"
+               + messaggio
+               + "</div>";
+       } else {
+           contenitore.innerHTML =
+               "<div class='alert alert-success'>"
+               + messaggio
+               + "</div>";
+       }
+   }
+
+   /* ======================= FINE AGGIUNTA ABILITA ======================= */
 				   
 function caricaAbilita(id) {
 	var url = "/soccorso_Web_SWA/rest/operatori/" + id + "/abilita";
