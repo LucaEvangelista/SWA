@@ -30,18 +30,12 @@ public class RichiesteRes {
 	@Logged
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response listaRichieste(@Context SecurityContext securityContext) {
-		
-	    try {
-	    	
+
 			if (!securityContext.isUserInRole("admin")) {
 			    return Response.status(Response.Status.FORBIDDEN)
 			            .entity(new ErrorResponse("Non hai i permessi per visualizzare la richiesta selezionata"))
 			            .build();
 			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		
 		List<Request> richieste = serviceR.findAllNotPending();
 		
@@ -53,18 +47,12 @@ public class RichiesteRes {
 	@Logged
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getRichiestaById(@PathParam("id") int id, @Context SecurityContext securityContext) {
-		
-	    try {
-	    	
+
 			if (!securityContext.isUserInRole("admin")) {
 			    return Response.status(Response.Status.FORBIDDEN)
 			            .entity(new ErrorResponse("Non hai i permessi per visualizzare la richiesta selezionata"))
 			            .build();
 			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	    
 		Request rq = serviceR.findById(id);
 		
@@ -134,18 +122,12 @@ public class RichiesteRes {
 	@Logged
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response rifiutaRichiesta(@PathParam("id") int id, @Context SecurityContext securityContext) {
-		
-	    try {
-	    	
+
 			if (!securityContext.isUserInRole("admin")) {
 			    return Response.status(Response.Status.FORBIDDEN)
 			            .entity(new ErrorResponse("Non hai i permessi per visualizzare la richiesta selezionata"))
 			            .build();
 			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		
 		Request rq = serviceR.findById(id);
 		
@@ -177,18 +159,12 @@ public class RichiesteRes {
 	@Logged
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response richiestaInLavorazione(@PathParam("id") int id, @Context SecurityContext securityContext) {
-		
-	    try {
-	    	
+
 			if (!securityContext.isUserInRole("admin")) {
 			    return Response.status(Response.Status.FORBIDDEN)
 			            .entity(new ErrorResponse("Non hai i permessi per visualizzare la richiesta selezionata"))
 			            .build();
 			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		
 		Request rq = serviceR.findById(id);
 		
@@ -217,6 +193,7 @@ public class RichiesteRes {
 	
 	@PUT
 	@Path("{id:[0-9]+}/terminata")
+	@Logged
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response richiestaTerminata(@PathParam("id") int id) {
 		

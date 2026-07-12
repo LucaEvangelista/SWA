@@ -57,17 +57,13 @@ public class MissioniRes {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response listaMissioni(@Context SecurityContext securityContext) {
 		
-	    try {
 	    	
 			if (!securityContext.isUserInRole("admin")) {
 			    return Response.status(Response.Status.FORBIDDEN)
 			            .entity(new ErrorResponse("Non hai i permessi per visualizzare la richiesta selezionata"))
 			            .build();
 			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+
 		
 		List<Missione> missioni = serviceMs.findAll();
 		
@@ -79,17 +75,13 @@ public class MissioniRes {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getMissioneById(@PathParam("id") int id, @Context SecurityContext securityContext) {
 		
-	    try {
-	    	
+
 			if (!securityContext.isUserInRole("admin")) {
 			    return Response.status(Response.Status.FORBIDDEN)
 			            .entity(new ErrorResponse("Non hai i permessi per visualizzare la richiesta selezionata"))
 			            .build();
 			}
 			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		
 		Missione ms = serviceMs.findById(id);
 		
@@ -106,18 +98,13 @@ public class MissioniRes {
 	@Path("{id:[0-9]+}/squadra")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getSquadraByMissionId(@PathParam("id") int id, @Context SecurityContext securityContext) {
-		
-	    try {
-	    	
+
 			if (!securityContext.isUserInRole("admin")) {
 			    return Response.status(Response.Status.FORBIDDEN)
 			            .entity(new ErrorResponse("Non hai i permessi per visualizzare la richiesta selezionata"))
 			            .build();
 			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+
 		
 		Squadra sq = serviceSq.findByMissioneId(id);
 		
@@ -134,18 +121,13 @@ public class MissioniRes {
 	@Path("{id:[0-9]+}/mezzi")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getMezziByMissionId(@PathParam("id") int id, @Context SecurityContext securityContext) {
-		
-	    try {
 	    	
 			if (!securityContext.isUserInRole("admin")) {
 			    return Response.status(Response.Status.FORBIDDEN)
 			            .entity(new ErrorResponse("Non hai i permessi per visualizzare la richiesta selezionata"))
 			            .build();
 			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+
 		
 		Missione ms = serviceMs.findById(id);
 		
@@ -164,18 +146,13 @@ public class MissioniRes {
 	@Path("{id:[0-9]+}/materiali")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getMaterialiByMissionId(@PathParam("id") int id, @Context SecurityContext securityContext) {
-		
-	    try {
-	    	
+
 			if (!securityContext.isUserInRole("admin")) {
 			    return Response.status(Response.Status.FORBIDDEN)
 			            .entity(new ErrorResponse("Non hai i permessi per visualizzare la richiesta selezionata"))
 			            .build();
 			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+
 		
 		List<Materiale> materiali = serviceMtm.materialiOfTheMission(id);
 		
@@ -195,17 +172,12 @@ public class MissioniRes {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response termineMissione(@PathParam("id") int id, @Context SecurityContext securityContext) {
 		
-	    try {
-	    	
 			if (!securityContext.isUserInRole("admin")) {
 			    return Response.status(Response.Status.FORBIDDEN)
 			            .entity(new ErrorResponse("Non hai i permessi per visualizzare la richiesta selezionata"))
 			            .build();
 			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+
 		
 		Missione ms = serviceMs.findById(id);
 
@@ -236,18 +208,13 @@ public class MissioniRes {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response createMission(MissioneCreateRequest rqst, @Context SecurityContext securityContext) {
-		
-	    try {
 	    	
 			if (!securityContext.isUserInRole("admin")) {
 			    return Response.status(Response.Status.FORBIDDEN)
 			            .entity(new ErrorResponse("Non hai i permessi per visualizzare la richiesta selezionata"))
 			            .build();
 			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+
 
 	    if (rqst == null) {
 	        return Response.status(Response.Status.BAD_REQUEST)

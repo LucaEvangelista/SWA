@@ -37,18 +37,12 @@ public class OperatoriRes {
 	@Path("list")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response listOperatori(@Context SecurityContext securityContext) {
-		
-	    try {
-	    	
+
 			if (!securityContext.isUserInRole("admin")) {
 			    return Response.status(Response.Status.FORBIDDEN)
 			            .entity(new ErrorResponse("Non hai i permessi per visualizzare la richiesta selezionata"))
 			            .build();
 			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		
 	    List<Operator> operatori = serviceO.findAll();
 
@@ -135,18 +129,12 @@ public class OperatoriRes {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response createOperator(Operator op, @Context SecurityContext securityContext) {
-		
-	    try {
-	    	
+
 			if (!securityContext.isUserInRole("admin")) {
 			    return Response.status(Response.Status.FORBIDDEN)
 			            .entity(new ErrorResponse("Non hai i permessi per visualizzare la richiesta selezionata"))
 			            .build();
 			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		
 		if(op.getName() == null || op.getName().isBlank()) {
             return Response.status(Response.Status.BAD_REQUEST)
