@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 import eva.luca.soccorso_Web.data.db.ConnectionFactory;
 import eva.luca.soccorso_Web.models.Request;
@@ -345,6 +346,85 @@ public class RequestDao implements IDaoRead<Request>, IDaoWrite<Request>{
 
 	    } catch (SQLException e) {
 	        throw new RuntimeException("Errore JDBC durante il conteggio delle richieste", e);
+	    }
+
+	    return 0;
+	}
+	
+	public List<Request> findByStatoPaginated(String stato, int offset, int size) {
+
+	    List<Request> richieste = new ArrayList<>();
+
+	    String query = """
+	        SELECT *
+	        FROM richieste
+	        WHERE fase = ?
+	        ORDER BY created_at DESC
+	        LIMIT ? OFFSET ?
+	        """;
+
+	    try (Connection con = ConnectionFactory.getConnection();
+	         PreparedStatement ps = con.prepareStatement(query)) {
+
+	        ps.setString(1, stato);
+	        ps.setInt(2, size);
+	        ps.setInt(3, offset);
+
+	        try (ResultSet rs = ps.executeQuery()) {
+
+	            while (rs.next()) {
+
+	                Request rq = new Request();
+
+	                rq.setNomePersona(rs.getString("nomePERS"));
+	                rq.setMailPersona(rs.getString("mailPERS"));
+	                rq.setDescrizione(rs.getString("descrizione"));
+	                rq.setIndirizzo(rs.getString("indirizzo"));
+	                rq.setId(rs.getInt("richiestaID"));
+
+	                rq.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
+	                rq.setWorkingAt(getLocalDateTime(rs, "working_at"));
+	                rq.setClosedAt(getLocalDateTime(rs, "closed_at"));
+
+	                rq.setFase(rs.getString("fase"));
+	                rq.setUuid(rs.getString("codice_u"));
+
+	                richieste.add(rq);
+	            }
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        throw new RuntimeException("Errore durante il caricamento delle richieste filtrate", e);
+	    }
+
+	    return richieste;
+	}
+	
+	public long countByStato(String stato) {
+
+	    String query = """
+	        SELECT COUNT(*)
+	        FROM richieste
+	        WHERE fase = ?
+	        """;
+
+	    try (Connection con = ConnectionFactory.getConnection();
+	         PreparedStatement ps = con.prepareStatement(query)) {
+
+	        ps.setString(1, stato);
+
+	        try (ResultSet rs = ps.executeQuery()) {
+
+	            if (rs.next()) {
+	                return rs.getLong(1);
+	            }
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        throw new RuntimeException(
+	                "Errore durante il conteggio delle richieste filtrate", e);
 	    }
 
 	    return 0;

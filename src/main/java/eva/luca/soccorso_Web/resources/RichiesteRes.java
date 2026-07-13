@@ -1,6 +1,7 @@
 package eva.luca.soccorso_Web.resources;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import eva.luca.soccorso_Web.data.RequestDao;
@@ -9,6 +10,8 @@ import eva.luca.soccorso_Web.models.PaginatedResponse;
 import eva.luca.soccorso_Web.models.Request;
 import eva.luca.soccorso_Web.utility.Logged;
 import eva.luca.soccorso_Web.utility.UtilityMethods;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DefaultValue;
 import jakarta.ws.rs.GET;
@@ -33,8 +36,16 @@ public class RichiesteRes {
 	@Logged
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response listaRichieste(
-	        @DefaultValue("1") @QueryParam("page") int page,
+			@DefaultValue("1") @QueryParam("page") int page,
 	        @DefaultValue("10") @QueryParam("size") int size,
+	        @Parameter(description = "Filtra le richieste in base allo stato",
+	                schema = @Schema(allowableValues = {
+	                        "attiva",
+	                        "in esecuzione",
+	                        "terminata",
+	                        "rifiutata"}))
+	        @QueryParam("stato")String stato,
+	        
 	        @Context SecurityContext securityContext) {
 
 	    if (!securityContext.isUserInRole("admin")) {
@@ -54,16 +65,49 @@ public class RichiesteRes {
 	                .entity(new ErrorResponse("La dimensione della pagina deve essere compresa tra 1 e 100"))
 	                .build();
 	    }
+	    
+	    //controllo su stato, se non presente rimane vuoto
+	    //se contiene spazi vengono tolti
+	    if (stato != null) {
+	        stato = stato.trim().toLowerCase();
+
+	        if (stato.isBlank()) {
+	            stato = null;
+	        }
+	    }
+	    
+	    Set<String> statiPermessi = Set.of("attiva",
+	            "in esecuzione",
+	            "terminata",
+	            "rifiutata");
+
+	    if (stato != null && !statiPermessi.contains(stato)) {
+	        return Response.status(Response.Status.BAD_REQUEST)
+	                .entity(new ErrorResponse("Stato non valido. Valori consentiti:attiva, in esecuzione, terminata, rifiutata"))
+	                .build();
+	    }
 
 	    int offset = (page - 1) * size;
+	    
+	    List<Request> richieste;
+	    
+	    long totaleRichieste;
 
-	    List<Request> richieste = serviceR.findAllNotPendingPaginated(offset, size);
+	    if (stato == null) {
+	        // Nessun filtro: restituisce tutte le richieste non pendenti
+	        richieste = serviceR.findAllNotPendingPaginated(offset, size);
+	        totaleRichieste = serviceR.countAllNotPending();
 
-	    long totaleRichieste = serviceR.countAllNotPending();
+	    } else {
+	        // Filtro per stato
+	        richieste = serviceR.findByStatoPaginated(stato, offset, size);
+	        totaleRichieste = serviceR.countByStato(stato);
+	    }
 
 	    int totalePagine = (int) Math.ceil((double) totaleRichieste / size);
 
-	    PaginatedResponse<Request> risultato = new PaginatedResponse<>(richieste,
+	    PaginatedResponse<Request> risultato = new PaginatedResponse<>(
+	                    richieste,
 	                    page,
 	                    size,
 	                    totaleRichieste,
@@ -251,5 +295,4 @@ public class RichiesteRes {
 		
 		return Response.ok(serviceR.findById(id)).build();
 	}
-
 }

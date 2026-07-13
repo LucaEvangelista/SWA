@@ -1,47 +1,207 @@
-// Array globale: contiene tutte le richieste ricevute dalla REST
+
+var paginaCorrente = 1;
+var dimensionePagina = 10;
+var totalePagine = 0;
+var totaleElementi = 0;
+var statoCorrente = "";
 var richiesteCaricate = [];
 
-// Aspetta che la pagina HTML sia caricata
+
+ //Aspetta che la pagina HTML sia completamente caricata.
+ 
 document.addEventListener("DOMContentLoaded", function () {
+    collegaEventiPagina();
     caricaRichieste();
-
-    var filtroStato = document.getElementById("filtro-stato-richieste");
-
-    if (filtroStato !== null) {
-        filtroStato.addEventListener("change", function () {
-            filtraRichiestePerStato();
-        });
-    }
 });
 
-// Chiama l'endpoint REST
-function caricaRichieste() {
-    var url = "/soccorso_Web_SWA/rest/richieste/list";
+//Collega gli eventi ai controlli presenti nell'HTML
+function collegaEventiPagina() {
+    var filtroStato =
+        document.getElementById("filtro-stato-richieste");
 
-    // Nasconde un eventuale vecchio messaggio di errore
+    var selezioneDimensione =
+        document.getElementById("dimensione-pagina");
+
+    var pulsantePrecedente =
+        document.getElementById("pagina-precedente");
+
+    var pulsanteSuccessiva =
+        document.getElementById("pagina-successiva");
+
+    /*
+     * Quando cambia il filtro, viene eseguita una nuova chiamata
+     * alla REST partendo dalla prima pagina.
+     */
+	
+    if (filtroStato !== null) {
+        filtroStato.addEventListener("change", function () {
+            var valoreFiltro = filtroStato.value;
+
+            if (
+                valoreFiltro === "tutte" ||
+                valoreFiltro === ""
+            ) {
+                statoCorrente = "";
+            } else {
+                statoCorrente = valoreFiltro;
+            }
+
+            paginaCorrente = 1;
+            caricaRichieste();
+        });
+    }
+
+    /*
+     * Modifica il numero di richieste mostrate per pagina.
+     */
+    if (selezioneDimensione !== null) {
+        selezioneDimensione.addEventListener("change", function () {
+            var nuovaDimensione =
+                parseInt(selezioneDimensione.value, 10);
+
+            if (
+                !isNaN(nuovaDimensione) &&
+                nuovaDimensione >= 1 &&
+                nuovaDimensione <= 100
+            ) {
+                dimensionePagina = nuovaDimensione;
+                paginaCorrente = 1;
+
+                caricaRichieste();
+            }
+        });
+    }
+
+    /*
+     * Torna alla pagina precedente.
+     */
+    if (pulsantePrecedente !== null) {
+        pulsantePrecedente.addEventListener("click", function () {
+            if (paginaCorrente > 1) {
+                paginaCorrente--;
+                caricaRichieste();
+            }
+        });
+    }
+
+    /*
+     * Passa alla pagina successiva.
+     */
+    if (pulsanteSuccessiva !== null) {
+        pulsanteSuccessiva.addEventListener("click", function () {
+            if (paginaCorrente < totalePagine) {
+                paginaCorrente++;
+                caricaRichieste();
+            }
+        });
+    }
+}
+
+/*
+ * Costruisce la URL della REST.
+ *
+ * Esempi:
+ *
+ * /rest/richieste/list?page=1&size=10
+ *
+ * /rest/richieste/list?page=1&size=10&stato=attiva
+ */
+function costruisciUrlRichieste() {
+    var url =
+        "/soccorso_Web_SWA/rest/richieste/list";
+
+    url +=
+        "?page=" +
+        encodeURIComponent(paginaCorrente);
+
+    url +=
+        "&size=" +
+        encodeURIComponent(dimensionePagina);
+
+    /*
+     * Il parametro stato viene aggiunto solo quando
+     * è stato selezionato uno stato specifico.
+     */
+    if (
+        statoCorrente !== null &&
+        statoCorrente !== ""
+    ) {
+        url +=
+            "&stato=" +
+            encodeURIComponent(statoCorrente);
+    }
+
+    return url;
+}
+
+/*
+ * Carica una pagina di richieste dalla REST.
+ */
+function caricaRichieste() {
+    var url = costruisciUrlRichieste();
+
     nascondiMessaggioErrore();
+    impostaCaricamento(true);
 
     fetch(url, {
         method: "GET",
+
         headers: {
             "Accept": "application/json"
         },
 
-        // Invia il cookie contenente il token di autenticazione
+        /*
+         * Invia il cookie contenente il token
+         * di autenticazione.
+         */
         credentials: "same-origin"
     })
         .then(function (response) {
             return leggiRispostaRest(response);
         })
-        .then(function (richieste) {
-            if (!Array.isArray(richieste)) {
-                throw new Error(
-                    "La REST non ha restituito una lista valida di richieste."
-                );
-            }
+        .then(function (risultato) {
+            /*
+             * La REST non restituisce più direttamente un array.
+             *
+             * Restituisce un oggetto PaginatedResponse simile a:
+             *
+             * {
+             *     "content": [],
+             *     "page": 1,
+             *     "size": 10,
+             *     "totalElements": 25,
+             *     "totalPages": 3,
+             *     "first": true,
+             *     "last": false
+             * }
+             */
 
-            richiesteCaricate = richieste;
+            validaRispostaPaginata(risultato);
+
+            richiesteCaricate = risultato.content;
+
+            paginaCorrente = numeroIntero(
+                risultato.page,
+                paginaCorrente
+            );
+
+            dimensionePagina = numeroIntero(
+                risultato.size,
+                dimensionePagina
+            );
+
+            totaleElementi = numeroIntero(
+                risultato.totalElements,
+                0
+            );
+
+            totalePagine = numeroIntero(
+                risultato.totalPages,
+                0
+            );
+
             mostraRichieste(richiesteCaricate);
+            aggiornaControlliPaginazione();
         })
         .catch(function (errore) {
             console.error(
@@ -50,18 +210,53 @@ function caricaRichieste() {
             );
 
             richiesteCaricate = [];
+            totaleElementi = 0;
+            totalePagine = 0;
 
             mostraTabellaVuota();
-            mostraMessaggioErrore(errore.message);
+            aggiornaControlliPaginazione();
+
+            mostraMessaggioErrore(
+                errore.message ||
+                "Errore durante il caricamento delle richieste."
+            );
+        })
+        .then(function () {
+            /*
+             * Viene eseguito sia dopo il successo
+             * sia dopo la gestione dell'errore.
+             */
+            impostaCaricamento(false);
         });
 }
 
 /*
- * Legge sempre il corpo della risposta REST, anche quando lo status
- * HTTP è 401, 403, 404, 409 oppure 500.
+ * Controlla che il JSON restituito dalla REST
+ * abbia la struttura di PaginatedResponse.
+ */
+function validaRispostaPaginata(risultato) {
+    if (
+        risultato === null ||
+        typeof risultato !== "object"
+    ) {
+        throw new Error(
+            "La REST non ha restituito una risposta paginata valida."
+        );
+    }
+
+    if (!Array.isArray(risultato.content)) {
+        throw new Error(
+            "Il campo content della risposta non contiene una lista valida."
+        );
+    }
+}
+
+/*
+ * Legge sempre il corpo della risposta REST,
+ * anche quando lo status HTTP indica un errore.
  *
- * In questo modo viene recuperato il messaggio contenuto
- * nell'oggetto ErrorResponse restituito dalla REST.
+ * In questo modo viene recuperato il messaggio
+ * contenuto nell'ErrorResponse.
  */
 function leggiRispostaRest(response) {
     return response.text().then(function (testoRisposta) {
@@ -74,17 +269,20 @@ function leggiRispostaRest(response) {
             try {
                 contenuto = JSON.parse(testoRisposta);
             } catch (erroreParsing) {
-                // La risposta non è JSON
+                /*
+                 * La risposta non è JSON.
+                 */
                 contenuto = testoRisposta;
             }
         }
 
         if (!response.ok) {
-            var messaggio = estraiMessaggioErrore(
-                contenuto,
-                response.status,
-                response.statusText
-            );
+            var messaggio =
+                estraiMessaggioErrore(
+                    contenuto,
+                    response.status,
+                    response.statusText
+                );
 
             var erroreHttp = new Error(messaggio);
 
@@ -99,12 +297,13 @@ function leggiRispostaRest(response) {
 }
 
 /*
- * Estrae il messaggio restituito dalla REST.
- *
- * Sono gestiti diversi nomi possibili per il campo
- * presente nella classe ErrorResponse.
+ * Estrae il messaggio contenuto nell'ErrorResponse.
  */
-function estraiMessaggioErrore(contenuto, status, statusText) {
+function estraiMessaggioErrore(
+    contenuto,
+    status,
+    statusText
+) {
     if (
         contenuto !== null &&
         typeof contenuto === "object"
@@ -131,8 +330,8 @@ function estraiMessaggioErrore(contenuto, status, statusText) {
     }
 
     /*
-     * Se la REST ha restituito direttamente una stringa,
-     * viene mostrata a condizione che non sia una pagina HTML.
+     * Se la REST restituisce direttamente una stringa,
+     * viene mostrata solo se non è una pagina HTML.
      */
     if (
         typeof contenuto === "string" &&
@@ -143,10 +342,10 @@ function estraiMessaggioErrore(contenuto, status, statusText) {
         }
     }
 
-    /*
-     * Messaggi predefiniti usati solamente quando la REST
-     * non ha restituito un ErrorResponse leggibile.
-     */
+    if (status === 400) {
+        return "I parametri inviati alla REST non sono validi.";
+    }
+
     if (status === 401) {
         return "Non sei autenticato. Devi effettuare il login per visualizzare le richieste.";
     }
@@ -172,66 +371,23 @@ function estraiMessaggioErrore(contenuto, status, statusText) {
         statusText !== undefined &&
         statusText !== ""
     ) {
-        return "Errore HTTP " + status + ": " + statusText;
+        return "Errore HTTP " +
+            status +
+            ": " +
+            statusText;
     }
 
     return "Errore HTTP " + status + ".";
 }
 
-// Mostra il messaggio di errore nella pagina HTML
-function mostraMessaggioErrore(messaggio) {
-    var messaggioErrore =
-        document.getElementById("messaggio-errore");
-
-    if (messaggioErrore === null) {
-        console.error(
-            "Elemento con id messaggio-errore non trovato nell'HTML."
-        );
-
-        return;
-    }
-
-    /*
-     * Usiamo textContent per evitare che il contenuto ricevuto
-     * dal server venga interpretato come codice HTML.
-     */
-    messaggioErrore.textContent =
-        messaggio ||
-        "Errore durante il caricamento delle richieste.";
-
-    messaggioErrore.classList.remove("d-none");
-}
-
-// Nasconde un eventuale messaggio precedente
-function nascondiMessaggioErrore() {
-    var messaggioErrore =
-        document.getElementById("messaggio-errore");
-
-    if (messaggioErrore !== null) {
-        messaggioErrore.textContent = "";
-        messaggioErrore.classList.add("d-none");
-    }
-}
-
-// Pulisce la tabella quando la REST restituisce un errore
-function mostraTabellaVuota() {
-    var tbody =
-        document.getElementById("corpo-tabella-richieste");
-
-    if (tbody !== null) {
-        tbody.innerHTML =
-            "<tr>" +
-                "<td colspan='9' class='text-center text-muted'>" +
-                    "Impossibile caricare le richieste" +
-                "</td>" +
-            "</tr>";
-    }
-}
-
-// Mostra le richieste nella tabella
+/*
+ * Mostra le richieste della pagina corrente nella tabella.
+ */
 function mostraRichieste(richieste) {
     var tbody =
-        document.getElementById("corpo-tabella-richieste");
+        document.getElementById(
+            "corpo-tabella-richieste"
+        );
 
     if (tbody === null) {
         console.error(
@@ -244,142 +400,358 @@ function mostraRichieste(richieste) {
     var righe = "";
 
     if (richieste.length === 0) {
-        righe += "<tr>";
-
-        righe +=
-            "<td colspan='9' class='text-center text-muted'>" +
-                "Nessuna richiesta trovata" +
-            "</td>";
-
-        righe += "</tr>";
-
-        tbody.innerHTML = righe;
+        tbody.innerHTML =
+            "<tr>" +
+                "<td colspan='9' " +
+                    "class='text-center text-muted'>" +
+                    "Nessuna richiesta trovata" +
+                "</td>" +
+            "</tr>";
 
         return;
     }
 
-    for (var i = 0; i < richieste.length; i++) {
+    for (
+        var i = 0;
+        i < richieste.length;
+        i++
+    ) {
         var rq = richieste[i];
+
+        var idRichiesta =
+            numeroIntero(rq.id, 0);
 
         righe += "<tr>";
 
         righe +=
             "<td>" +
-                valore(rq.nomePersona) +
+                valoreSicuro(rq.nomePersona) +
             "</td>";
 
         righe +=
             "<td>" +
-                valore(rq.mailPersona) +
+                valoreSicuro(rq.mailPersona) +
             "</td>";
 
         righe +=
             "<td>" +
-                valore(rq.indirizzo) +
+                valoreSicuro(rq.indirizzo) +
             "</td>";
 
         righe +=
             "<td>" +
-                valore(rq.descrizione) +
+                valoreSicuro(rq.descrizione) +
             "</td>";
 
         righe +=
             "<td>" +
-                valore(rq.fase) +
+                valoreSicuro(rq.fase) +
             "</td>";
 
         righe +=
             "<td>" +
-                formattaDataOra(rq.createdAt) +
+                valoreSicuro(
+                    formattaDataOra(rq.createdAt)
+                ) +
             "</td>";
 
         righe +=
             "<td>" +
-                formattaDataOra(rq.workingAt) +
+                valoreSicuro(
+                    formattaDataOra(rq.workingAt)
+                ) +
             "</td>";
 
         righe +=
             "<td>" +
-                formattaDataOra(rq.closedAt) +
+                valoreSicuro(
+                    formattaDataOra(rq.closedAt)
+                ) +
             "</td>";
 
-        righe += "<td>";
+        righe +=
+            "<td class='text-center'>";
 
         righe +=
             "<button " +
                 "type='button' " +
                 "class='btn btn-primary btn-sm' " +
-                "onclick='vediDettaglioRichiesta(" + rq.id + ")'>" +
+                "onclick='vediDettaglioRichiesta(" +
+                    idRichiesta +
+                ")'>" +
                 "Dettaglio" +
             "</button>";
 
         righe += "</td>";
-
         righe += "</tr>";
     }
 
     tbody.innerHTML = righe;
 }
 
-// Filtra le richieste in base allo stato selezionato
-function filtraRichiestePerStato() {
-    var filtro =
-        document.getElementById("filtro-stato-richieste");
+/*
+ * Aggiorna il testo e lo stato dei pulsanti
+ * della paginazione.
+ */
+function aggiornaControlliPaginazione() {
+    var informazioni =
+        document.getElementById(
+            "informazioni-paginazione"
+        );
 
-    if (filtro === null) {
-        mostraRichieste(richiesteCaricate);
-        return;
+    var totale =
+        document.getElementById(
+            "totale-richieste"
+        );
+
+    var pulsantePrecedente =
+        document.getElementById(
+            "pagina-precedente"
+        );
+
+    var pulsanteSuccessiva =
+        document.getElementById(
+            "pagina-successiva"
+        );
+
+    var selezioneDimensione =
+        document.getElementById(
+            "dimensione-pagina"
+        );
+
+    var paginaVisualizzata =
+        paginaCorrente;
+
+    /*
+     * Se non esistono risultati mostriamo
+     * "Pagina 0 di 0".
+     */
+    if (totalePagine === 0) {
+        paginaVisualizzata = 0;
     }
 
-    var statoSelezionato = filtro.value;
-
-    if (
-        statoSelezionato === "" ||
-        statoSelezionato === "tutte"
-    ) {
-        mostraRichieste(richiesteCaricate);
-        return;
+    if (informazioni !== null) {
+        informazioni.textContent =
+            "Pagina " +
+            paginaVisualizzata +
+            " di " +
+            totalePagine;
     }
 
-    var richiesteFiltrate = [];
-
-    for (var i = 0; i < richiesteCaricate.length; i++) {
-        var rq = richiesteCaricate[i];
-
-        if (
-            rq.fase !== null &&
-            rq.fase !== undefined &&
-            rq.fase.toLowerCase() ===
-                statoSelezionato.toLowerCase()
-        ) {
-            richiesteFiltrate.push(rq);
-        }
+    if (totale !== null) {
+        totale.textContent =
+            "Richieste trovate: " +
+            totaleElementi;
     }
 
-    mostraRichieste(richiesteFiltrate);
+    if (pulsantePrecedente !== null) {
+        pulsantePrecedente.disabled =
+            totalePagine === 0 ||
+            paginaCorrente <= 1;
+    }
+
+    if (pulsanteSuccessiva !== null) {
+        pulsanteSuccessiva.disabled =
+            totalePagine === 0 ||
+            paginaCorrente >= totalePagine;
+    }
+
+    if (selezioneDimensione !== null) {
+        selezioneDimensione.value =
+            String(dimensionePagina);
+    }
 }
 
-// Apre la pagina del dettaglio della richiesta
+/*
+ * Mostra una riga temporanea durante il caricamento
+ * e disabilita i controlli.
+ */
+function impostaCaricamento(inCaricamento) {
+    var tbody =
+        document.getElementById(
+            "corpo-tabella-richieste"
+        );
+
+    var filtroStato =
+        document.getElementById(
+            "filtro-stato-richieste"
+        );
+
+    var selezioneDimensione =
+        document.getElementById(
+            "dimensione-pagina"
+        );
+
+    var pulsantePrecedente =
+        document.getElementById(
+            "pagina-precedente"
+        );
+
+    var pulsanteSuccessiva =
+        document.getElementById(
+            "pagina-successiva"
+        );
+
+    if (filtroStato !== null) {
+        filtroStato.disabled =
+            inCaricamento;
+    }
+
+    if (selezioneDimensione !== null) {
+        selezioneDimensione.disabled =
+            inCaricamento;
+    }
+
+    if (inCaricamento) {
+        if (pulsantePrecedente !== null) {
+            pulsantePrecedente.disabled = true;
+        }
+
+        if (pulsanteSuccessiva !== null) {
+            pulsanteSuccessiva.disabled = true;
+        }
+
+        if (tbody !== null) {
+            tbody.innerHTML =
+                "<tr>" +
+                    "<td colspan='9' " +
+                        "class='text-center text-muted'>" +
+                        "Caricamento richieste..." +
+                    "</td>" +
+                "</tr>";
+        }
+    } else {
+        aggiornaControlliPaginazione();
+    }
+}
+
+/*
+ * Mostra il messaggio di errore nella pagina HTML.
+ */
+function mostraMessaggioErrore(messaggio) {
+    var messaggioErrore =
+        document.getElementById(
+            "messaggio-errore"
+        );
+
+    if (messaggioErrore === null) {
+        console.error(
+            "Elemento con id messaggio-errore non trovato nell'HTML."
+        );
+
+        return;
+    }
+
+    messaggioErrore.textContent =
+        messaggio ||
+        "Errore durante il caricamento delle richieste.";
+
+    messaggioErrore.classList.remove(
+        "d-none"
+    );
+}
+
+/*
+ * Nasconde un eventuale messaggio precedente.
+ */
+function nascondiMessaggioErrore() {
+    var messaggioErrore =
+        document.getElementById(
+            "messaggio-errore"
+        );
+
+    if (messaggioErrore !== null) {
+        messaggioErrore.textContent = "";
+
+        messaggioErrore.classList.add(
+            "d-none"
+        );
+    }
+}
+
+/*
+ * Pulisce la tabella quando la REST restituisce
+ * un errore.
+ */
+function mostraTabellaVuota() {
+    var tbody =
+        document.getElementById(
+            "corpo-tabella-richieste"
+        );
+
+    if (tbody !== null) {
+        tbody.innerHTML =
+            "<tr>" +
+                "<td colspan='9' " +
+                    "class='text-center text-muted'>" +
+                    "Impossibile caricare le richieste" +
+                "</td>" +
+            "</tr>";
+    }
+}
+
+/*
+ * Apre la pagina del dettaglio della richiesta.
+ */
 function vediDettaglioRichiesta(id) {
     window.location.href =
-        "/soccorso_Web_SWA/viste/DettagliRichieste.html?id=" +
-        id;
+        "/soccorso_Web_SWA/viste/" +
+        "DettagliRichieste.html?id=" +
+        encodeURIComponent(id);
 }
 
-// Evita di stampare null oppure undefined nella tabella
-function valore(val) {
+/*
+ * Converte un valore in numero intero.
+ */
+function numeroIntero(
+    valore,
+    valorePredefinito
+) {
+    var numero =
+        parseInt(valore, 10);
+
+    if (isNaN(numero)) {
+        return valorePredefinito;
+    }
+
+    return numero;
+}
+
+/*
+ * Evita di stampare null o undefined
+ * e protegge il contenuto HTML.
+ */
+function valoreSicuro(valore) {
     if (
-        val === null ||
-        val === undefined ||
-        val === ""
+        valore === null ||
+        valore === undefined ||
+        valore === ""
     ) {
         return "-";
     }
 
-    return val;
+    return escapeHtml(
+        String(valore)
+    );
 }
 
-// Formatta le date LocalDateTime ricevute dalla REST
+/*
+ * Impedisce che i dati ricevuti dalla REST
+ * siano interpretati come codice HTML.
+ */
+function escapeHtml(testo) {
+    return testo
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+/*
+ * Formatta le date LocalDateTime ricevute
+ * dalla REST.
+ */
 function formattaDataOra(data) {
     if (
         data === null ||
@@ -392,8 +764,8 @@ function formattaDataOra(data) {
     var d;
 
     /*
-     * Caso 1:
-     * Jackson restituisce una stringa:
+     * Jackson può restituire una stringa:
+     *
      * "2026-07-12T16:30:00"
      */
     if (typeof data === "string") {
@@ -401,8 +773,8 @@ function formattaDataOra(data) {
     }
 
     /*
-     * Caso 2:
-     * Jackson restituisce un array:
+     * Oppure può restituire un array:
+     *
      * [2026, 7, 12, 16, 30, 0]
      */
     else if (Array.isArray(data)) {
@@ -414,10 +786,7 @@ function formattaDataOra(data) {
             data[4] || 0,
             data[5] || 0
         );
-    }
-
-    // Formato non previsto
-    else {
+    } else {
         return data;
     }
 
@@ -425,11 +794,14 @@ function formattaDataOra(data) {
         return data;
     }
 
-    return d.toLocaleString("it-IT", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit"
-    });
+    return d.toLocaleString(
+        "it-IT",
+        {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit"
+        }
+    );
 }
