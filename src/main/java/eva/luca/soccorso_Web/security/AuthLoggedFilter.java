@@ -89,17 +89,17 @@ public class AuthLoggedFilter implements ContainerRequestFilter {
                 } else {
                     //se non va bene... 
                     requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED)
-                    		.entity(new ErrorResponse("Non sei autorizzato"))
+                    		.entity(new ErrorResponse("Non sei autorizzato, devi prima effetuare il login"))
                     		.build());
                 }
             } catch (Exception e) {
                 requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED)
-                		.entity(new ErrorResponse("Non sei autorizzato"))
+                		.entity(new ErrorResponse("Non sei autorizzato, devi prima effetuare il login"))
                 		.build());
             }
         } else {
             requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED)
-            		.entity(new ErrorResponse("Non sei autorizzato"))
+            		.entity(new ErrorResponse("Non sei autorizzato, devi prima effetuare il login"))
             		.build());
         }
     }

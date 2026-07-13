@@ -130,11 +130,11 @@ public class OperatoriRes {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response createOperator(Operator op, @Context SecurityContext securityContext) {
 
-			if (!securityContext.isUserInRole("admin")) {
-			    return Response.status(Response.Status.FORBIDDEN)
-			            .entity(new ErrorResponse("Non hai i permessi per visualizzare la richiesta selezionata"))
-			            .build();
-			}
+		if (!securityContext.isUserInRole("admin")) {
+		    return Response.status(Response.Status.FORBIDDEN)
+		            .entity(new ErrorResponse("Non hai i permessi per visualizzare la richiesta selezionata"))
+		            .build();
+		}
 		
 		if(op.getName() == null || op.getName().isBlank()) {
             return Response.status(Response.Status.BAD_REQUEST)

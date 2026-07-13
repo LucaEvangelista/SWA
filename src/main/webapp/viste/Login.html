@@ -11,89 +11,212 @@
         rel="stylesheet">
 
     <style>
+        :root {
+            --primary-start: #4e73df;
+            --primary-end: #224abe;
+            --text-dark: #3a3b45;
+            --text-muted: #858796;
+        }
+
+        html,
+        body {
+            min-height: 100%;
+        }
+
         body {
             min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(180deg, var(--primary-start) 10%, var(--primary-end) 100%);
+            background-attachment: fixed;
+        }
+
+        .login-wrapper {
+            min-height: 100vh;
             display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #f4f6f9;
+            align-items: flex-start;
+            padding-top: 3rem;
+            padding-bottom: 3rem;
         }
 
         .login-card {
-            width: 100%;
-            max-width: 430px;
+            overflow: hidden;
+            border: 0;
+            border-radius: 0.65rem;
+            box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.2);
+        }
+
+        .login-card .card-body {
+            padding: 3rem;
+        }
+
+        .login-title {
+            color: var(--text-dark);
+        }
+
+        .login-subtitle {
+            color: var(--text-muted);
+        }
+
+        .form-control-user {
+            min-height: 3.15rem;
+            padding: 0.8rem 1.25rem;
+            border-radius: 10rem;
+            font-size: 0.9rem;
+        }
+
+        .password-group .form-control-user {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+
+        .password-group .btn-show-password {
+            border-top-right-radius: 10rem;
+            border-bottom-right-radius: 10rem;
+            padding-right: 1.25rem;
+            padding-left: 1.25rem;
+        }
+
+        .btn-user {
+            min-height: 3.15rem;
+            border-radius: 10rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .back-link {
+            color: var(--primary-start);
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            color: var(--primary-end);
+            text-decoration: underline;
+        }
+
+        @media (max-width: 575.98px) {
+            .login-wrapper {
+                padding-top: 1.5rem;
+                padding-bottom: 1.5rem;
+            }
+
+            .login-card .card-body {
+                padding: 2rem 1.5rem;
+            }
         }
     </style>
+
+    <script src="../js/SWAscript/Login.js" defer></script>
 </head>
+
 <body>
 
-<main class="container">
-    <div class="card login-card mx-auto shadow-sm">
-        <div class="card-body p-4 p-md-5">
-            <h1 class="h3 text-center mb-2">Accedi</h1>
-            <p class="text-secondary text-center mb-4">
-                Inserisci le credenziali del tuo account.
-            </p>
+<main class="container login-wrapper">
+    <div class="row justify-content-center w-100 m-0">
+        <div class="col-xl-5 col-lg-6 col-md-8 col-sm-10">
 
-            <div id="messaggio-errore"
-                 class="alert alert-danger d-none"
-                 role="alert"></div>
+            <div class="card login-card my-3">
+                <div class="card-body">
 
-            <form id="login-form" novalidate>
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <input
-                        type="email"
-                        class="form-control"
-                        id="email"
-                        name="email"
-                        autocomplete="username"
-                        required>
-                    <div class="invalid-feedback">
-                        Inserisci un indirizzo email valido.
+                    <div class="text-center">
+                        <h1 class="h4 login-title mb-2">
+                            Login Soccorso Web
+                        </h1>
+
+                        <p class="login-subtitle mb-4">
+                            Inserisci le credenziali del tuo account.
+                        </p>
                     </div>
-                </div>
 
-                <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
+                    <div
+                        id="messaggio-errore"
+                        class="alert alert-danger d-none"
+                        role="alert"
+                        aria-live="polite">
+                    </div>
 
-                    <div class="input-group">
-                        <input
-                            type="password"
-                            class="form-control"
-                            id="password"
-                            name="password"
-                            autocomplete="current-password"
-                            required>
+                    <form id="login-form" class="user" novalidate>
+
+                        <div class="mb-3">
+                            <label for="email" class="visually-hidden">
+                                Email
+                            </label>
+
+                            <input
+                                type="email"
+                                class="form-control form-control-user"
+                                id="email"
+                                name="email"
+                                placeholder="Inserisci la tua email"
+                                autocomplete="username"
+                                required>
+
+                            <div class="invalid-feedback ps-3">
+                                Inserisci un indirizzo email valido.
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="password" class="visually-hidden">
+                                Password
+                            </label>
+
+                            <div class="input-group password-group">
+                                <input
+                                    type="password"
+                                    class="form-control form-control-user"
+                                    id="password"
+                                    name="password"
+                                    placeholder="Inserisci la password"
+                                    autocomplete="current-password"
+                                    required>
+
+                                <button
+                                    class="btn btn-outline-secondary btn-show-password"
+                                    type="button"
+                                    id="mostra-password">
+                                    Mostra
+                                </button>
+
+                                <div class="invalid-feedback ps-3">
+                                    Inserisci la password.
+                                </div>
+                            </div>
+                        </div>
 
                         <button
-                            class="btn btn-outline-secondary"
-                            type="button"
-                            id="mostra-password">
-                            Mostra
+                            type="submit"
+                            id="pulsante-login"
+                            class="btn btn-primary btn-user w-100">
+
+                            <span id="testo-login">Accedi</span>
+
+                            <span
+                                id="spinner-login"
+                                class="spinner-border spinner-border-sm ms-2 d-none"
+                                aria-hidden="true">
+                            </span>
                         </button>
 
-                        <div class="invalid-feedback">
-                            Inserisci la password.
-                        </div>
-                    </div>
-                </div>
+                    </form>
 
-                <button
-                    type="submit"
-                    id="pulsante-login"
-                    class="btn btn-primary w-100">
-                    <span id="testo-login">Accedi</span>
-                    <span
-                        id="spinner-login"
-                        class="spinner-border spinner-border-sm ms-2 d-none"
-                        aria-hidden="true"></span>
-                </button>
-            </form>
+                    <hr class="my-4">
+
+                    <div class="text-center">
+                        <a class="small back-link" href="NuovaRichiesta.html">
+                            Torna all'inserimento della richiesta
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
         </div>
     </div>
 </main>
 
-<script src="../js/SWAscript/Login.js"></script>
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+</script>
+
 </body>
 </html>
