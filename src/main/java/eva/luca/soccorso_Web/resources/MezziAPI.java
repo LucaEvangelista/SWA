@@ -16,6 +16,7 @@ import eva.luca.soccorso_Web.models.ErrorResponse;
 import eva.luca.soccorso_Web.models.Mezzo;
 
 //iniziale svolgimento tramite servlet esplicita
+//scopo didattico puramente personale
 
 @WebServlet("/api/mezzi/*")
 public class MezziAPI extends HttpServlet {

@@ -5,16 +5,19 @@ import java.util.UUID;
 
 import eva.luca.soccorso_Web.data.RequestDao;
 import eva.luca.soccorso_Web.models.ErrorResponse;
+import eva.luca.soccorso_Web.models.PaginatedResponse;
 import eva.luca.soccorso_Web.models.Request;
 import eva.luca.soccorso_Web.utility.Logged;
 import eva.luca.soccorso_Web.utility.UtilityMethods;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DefaultValue;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -29,17 +32,44 @@ public class RichiesteRes {
 	@Path("list")
 	@Logged
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response listaRichieste(@Context SecurityContext securityContext) {
+	public Response listaRichieste(
+	        @DefaultValue("1") @QueryParam("page") int page,
+	        @DefaultValue("10") @QueryParam("size") int size,
+	        @Context SecurityContext securityContext) {
 
-			if (!securityContext.isUserInRole("admin")) {
-			    return Response.status(Response.Status.FORBIDDEN)
-			            .entity(new ErrorResponse("Non hai i permessi per visualizzare la richiesta selezionata"))
-			            .build();
-			}
-		
-		List<Request> richieste = serviceR.findAllNotPending();
-		
-		return Response.ok(richieste).build();
+	    if (!securityContext.isUserInRole("admin")) {
+	        return Response.status(Response.Status.FORBIDDEN)
+	                .entity(new ErrorResponse("Non hai i permessi per visualizzare la lista delle richieste"))
+	                .build();
+	    }
+
+	    if (page < 1) {
+	        return Response.status(Response.Status.BAD_REQUEST)
+	                .entity(new ErrorResponse("Il numero della pagina deve essere maggiore o uguale a 1"))
+	                .build();
+	    }
+
+	    if (size < 1 || size > 100) {
+	        return Response.status(Response.Status.BAD_REQUEST)
+	                .entity(new ErrorResponse("La dimensione della pagina deve essere compresa tra 1 e 100"))
+	                .build();
+	    }
+
+	    int offset = (page - 1) * size;
+
+	    List<Request> richieste = serviceR.findAllNotPendingPaginated(offset, size);
+
+	    long totaleRichieste = serviceR.countAllNotPending();
+
+	    int totalePagine = (int) Math.ceil((double) totaleRichieste / size);
+
+	    PaginatedResponse<Request> risultato = new PaginatedResponse<>(richieste,
+	                    page,
+	                    size,
+	                    totaleRichieste,
+	                    totalePagine);
+
+	    return Response.ok(risultato).build();
 	}
 	
 	@GET

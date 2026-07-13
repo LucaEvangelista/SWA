@@ -277,6 +277,79 @@ public class RequestDao implements IDaoRead<Request>, IDaoWrite<Request>{
 		return list;
 	}
 	
+	//query per la paginazione di tutte le richieste non pendenti
+	public ArrayList<Request> findAllNotPendingPaginated(int offset, int limit) {
+
+	    String query = "SELECT * FROM richieste " +
+	            "WHERE fase <> ? " +
+	            "ORDER BY created_at DESC " +
+	            "LIMIT ? OFFSET ?";
+
+	    ArrayList<Request> list = new ArrayList<Request>();
+
+	    try (Connection con = ConnectionFactory.getConnection();
+	         PreparedStatement ps = con.prepareStatement(query)) {
+
+	        ps.setString(1, "pendente");
+	        ps.setInt(2, limit);
+	        ps.setInt(3, offset);
+
+	        try (ResultSet rs = ps.executeQuery()) {
+
+	            while (rs.next()) {
+
+	                Request rq = new Request();
+
+	                rq.setNomePersona(rs.getString("nomePERS"));
+	                rq.setMailPersona(rs.getString("mailPERS"));
+	                rq.setDescrizione(rs.getString("descrizione"));
+	                rq.setIndirizzo(rs.getString("indirizzo"));
+	                rq.setId(rs.getInt("richiestaID"));
+
+	                rq.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
+	                rq.setWorkingAt(getLocalDateTime(rs, "working_at"));
+	                rq.setClosedAt(getLocalDateTime(rs, "closed_at"));
+
+	                rq.setFase(rs.getString("fase"));
+	                rq.setUuid(rs.getString("codice_u"));
+
+	                list.add(rq);
+	            }
+	        }
+
+	    } catch (SQLException e) {
+	        throw new RuntimeException(
+	                "Errore JDBC durante la paginazione delle richieste", e);
+	    }
+
+	    return list;
+	}
+	
+	public long countAllNotPending() {
+
+	    String query = "SELECT COUNT(*) AS totale " +
+	            "FROM richieste " +
+	            "WHERE fase <> ?";
+
+	    try (Connection con = ConnectionFactory.getConnection();
+	         PreparedStatement ps = con.prepareStatement(query)) {
+
+	        ps.setString(1, "pendente");
+
+	        try (ResultSet rs = ps.executeQuery()) {
+
+	            if (rs.next()) {
+	                return rs.getLong("totale");
+	            }
+	        }
+
+	    } catch (SQLException e) {
+	        throw new RuntimeException("Errore JDBC durante il conteggio delle richieste", e);
+	    }
+
+	    return 0;
+	}
+	
 	public boolean findExistRecentRequestByEmail(String requestEmail) {
 		String query = "SELECT COUNT(*) AS totale " +
 			        "FROM richieste " +
