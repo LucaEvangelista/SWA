@@ -18,11 +18,6 @@ public class AdminDao implements IDaoRead<Admin>, IDaoWrite<Admin>{
 		try (Connection con = ConnectionFactory.getConnection();
 				PreparedStatement ps = con.prepareStatement(query)){
 			
-//			Connection con = ConnectionFactory.getConnection();
-//			String query = "INSERT INTO amministratori(nome, email, passkey) VALUES (?, ?, ?)";
-//			
-//			PreparedStatement ps = con.prepareStatement(query);
-			
 			ps.setString(1, a.getName());
 			ps.setString(2, a.getEmail());
 			ps.setString(3, a.getPasskey());
@@ -82,6 +77,33 @@ public class AdminDao implements IDaoRead<Admin>, IDaoWrite<Admin>{
 	public Admin findById(int id) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	public Admin findByMail(String mail) {
+		String query = "SELECT amministratoreID, nome, email FROM amministratori WHERE email = ?";
+		
+		try (Connection con = ConnectionFactory.getConnection();
+				PreparedStatement ps = con.prepareStatement(query)){
+			
+			ps.setString(1, mail);
+			ResultSet rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				Admin ad = new Admin();
+				
+				ad.setName(rs.getString("nome"));
+				ad.setEmail(rs.getString("email"));
+				ad.setId(rs.getInt("operatoreID"));
+				
+				
+				return ad;		
+			}
+			
+			return null;
+			
+			} catch (SQLException e) {
+			throw new RuntimeException("JDBC error", e);
+		}
 	}
 
 }

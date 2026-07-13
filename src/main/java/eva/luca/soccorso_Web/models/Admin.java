@@ -1,5 +1,7 @@
 package eva.luca.soccorso_Web.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Admin {
 	
 	private String name;
@@ -35,6 +37,7 @@ public class Admin {
 		this.email = email;
 	}
 
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	public String getPasskey() {
 		return passkey;
 	}

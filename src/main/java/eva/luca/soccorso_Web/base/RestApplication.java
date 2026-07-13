@@ -20,10 +20,35 @@ import eva.luca.soccorso_Web.resources.PatentiRes;
 import eva.luca.soccorso_Web.resources.RichiesteRes;
 import eva.luca.soccorso_Web.resources.SquadreRes;
 import eva.luca.soccorso_Web.security.AuthLoggedFilter;
+import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
+import io.swagger.v3.oas.annotations.servers.Server;
 import jakarta.ws.rs.ApplicationPath;
 import jakarta.ws.rs.core.Application;
 
 @ApplicationPath("rest")
+@OpenAPIDefinition(
+	    info = @Info(
+	        title = "Soccorso Web REST API",
+	        version = "1.0.0",
+	        description = "API REST per la gestione del sistema di soccorso"
+	    ),
+	    servers = {
+	        @Server(
+	            url = "/soccorso_Web_SWA",
+	            description = "Server locale Tomcat"
+	        )
+	    }
+	)
+	@SecurityScheme(
+	    name = "bearerAuth",
+	    type = SecuritySchemeType.HTTP,
+	    scheme = "bearer",
+	    bearerFormat = "JWT"
+	)
 public class RestApplication extends Application{
 	
 	private final Set<Class<?>> classes;
@@ -48,16 +73,21 @@ public class RestApplication extends Application{
 		c.add(AuthLoggedFilter.class);
 		c.add(CompetenzeRes.class);
 		
+		c.add(OpenApiResource.class);
+		
 //        aggiungiamo il provider Jackson per poter
 //        usare i suoi servizi di serializzazione e 
 //        deserializzazione JSON
+		
         classes = Collections.unmodifiableSet(c);
         
 //         ObjectMapper personalizzato per gestire LocalDate, LocalDateTime
+        
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
         
 //         Fa stampare le date come stringhe, es: "2000-05-12"
+        
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         
         

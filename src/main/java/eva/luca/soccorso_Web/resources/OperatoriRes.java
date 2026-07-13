@@ -38,11 +38,11 @@ public class OperatoriRes {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response listOperatori(@Context SecurityContext securityContext) {
 
-			if (!securityContext.isUserInRole("admin")) {
-			    return Response.status(Response.Status.FORBIDDEN)
-			            .entity(new ErrorResponse("Non hai i permessi per visualizzare la richiesta selezionata"))
-			            .build();
-			}
+		if (!securityContext.isUserInRole("admin")) {
+		    return Response.status(Response.Status.FORBIDDEN)
+		            .entity(new ErrorResponse("Non hai i permessi per visualizzare la richiesta selezionata"))
+		            .build();
+		}
 		
 	    List<Operator> operatori = serviceO.findAll();
 

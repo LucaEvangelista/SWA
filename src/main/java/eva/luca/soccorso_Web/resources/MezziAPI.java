@@ -15,6 +15,7 @@ import eva.luca.soccorso_Web.data.MezzoDao;
 import eva.luca.soccorso_Web.models.ErrorResponse;
 import eva.luca.soccorso_Web.models.Mezzo;
 
+//iniziale svolgimento tramite servlet esplicita
 
 @WebServlet("/api/mezzi/*")
 public class MezziAPI extends HttpServlet {
