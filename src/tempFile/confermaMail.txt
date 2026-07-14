@@ -197,3 +197,17 @@ grazie.
 
 
 
+[ 2026-07-14T18:42:24.725512 ]  giovanni.calogero@mail.com:
+--------------------------------- SoccorsoWeb ----------------------------------
+Gentile Giovanni Calogero,
+per poter procedere alla risoluzione della sua richiesta clicchi qui: 
+http://localhost:8080/soccorso_Web_SWA/viste/NuovaRichiesta.html?uuid=9717fa06-17a4-4437-b65b-1560f6797c7d
+grazie.
+--------------------------------- SoccorsoWeb ----------------------------------
+
+
+
+
+
+
+

@@ -193,6 +193,9 @@ NULL,
 );
  
  SELECT * FROM richieste;
+ 
+ INSERT INTO richieste (nomePERS, mailPERS, descrizione, indirizzo, working_at, closed_at, fase) VALUES
+('Mario Bianchi',  'mario23@mail.com', 'Incendio in foresta', 'Via Roma 54',  '2026-05-20 10:30:00',  NULL, 'attiva');
 
 
 CREATE TABLE missioni(
@@ -289,5 +292,12 @@ CREATE TABLE mezzi_missioni(
 INSERT INTO mezzi_missioni VALUES
 (6,1),
 (1,2);
+
+CREATE TABLE token_blacklist(
+	blacklistID BIGINT PRIMARY KEY AUTO_INCREMENT,
+    token VARCHAR(64) NOT NULL UNIQUE,
+    expires_at 	TIMESTAMP NOT NULL,
+    revoked_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
 
 

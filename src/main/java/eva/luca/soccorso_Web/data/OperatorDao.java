@@ -131,6 +131,122 @@ public class OperatorDao implements IDaoRead<Operator>, IDaoWrite<Operator>{
 		}
 		return list;
 	}
+	
+	public ArrayList<Operator> findAllPaginated(int offset, int size) {
+
+	    String query = "SELECT operatoreID, nome, cognome, eta, email, stato " +
+	            "FROM operatori " +
+	            "ORDER BY operatoreID " +
+	            "LIMIT ? OFFSET ?";
+
+	    ArrayList<Operator> operatori = new ArrayList<Operator>();
+
+	    try (Connection con = ConnectionFactory.getConnection();
+	    		PreparedStatement ps = con.prepareStatement(query)) {
+
+	        ps.setInt(1, size);
+	        ps.setInt(2, offset);
+
+	        ResultSet rs = ps.executeQuery();
+
+	            while (rs.next()) {
+					Operator op = new Operator();
+					op.setName(rs.getString("nome"));
+					op.setSurname(rs.getString("cognome"));
+					op.setAge(rs.getDate("eta").toLocalDate());
+					op.setEmail(rs.getString("email"));
+					op.setId(rs.getInt("operatoreID"));
+					op.setStatus(rs.getString("stato"));
+					
+					operatori.add(op);
+	            }
+	        
+	    } catch (SQLException e) {
+	        throw new RuntimeException("Errore durante il caricamento paginato degli operatori", e);
+	        
+	    }
+	    return operatori;
+	}
+	
+	public ArrayList<Operator> findByStatoPaginated(String stato, int offset, int size) {
+
+	    String query = "SELECT operatoreID, nome, cognome, eta, email, stato " +
+	            "FROM operatori " +
+	            "WHERE stato = ? " +
+	            "ORDER BY operatoreID " +
+	            "LIMIT ? OFFSET ?";
+
+	    ArrayList<Operator> operatori = new ArrayList<Operator>();
+
+	    try (Connection con = ConnectionFactory.getConnection();
+	    		PreparedStatement ps = con.prepareStatement(query)) {
+
+	        ps.setString(1, stato);
+	        ps.setInt(2, size);
+	        ps.setInt(3, offset);
+
+	        ResultSet rs = ps.executeQuery();
+
+	            while (rs.next()) {
+					Operator op = new Operator();
+					op.setName(rs.getString("nome"));
+					op.setSurname(rs.getString("cognome"));
+					op.setAge(rs.getDate("eta").toLocalDate());
+					op.setEmail(rs.getString("email"));
+					op.setId(rs.getInt("operatoreID"));
+					op.setStatus(rs.getString("stato"));
+					
+					operatori.add(op);
+	            }
+
+	    } catch (SQLException e) {
+	        throw new RuntimeException("Errore durante il caricamento degli operatori filtrati", e);
+	    }
+	    return operatori;
+	}
+	
+	public long countAllOperatori() {
+
+	    String query ="SELECT COUNT(*) AS totale FROM operatori";
+
+	    try (Connection con = ConnectionFactory.getConnection();
+	    		PreparedStatement ps = con.prepareStatement(query);
+	    		ResultSet rs = ps.executeQuery()) {
+
+	        if (rs.next()) {
+	            return rs.getLong("totale");
+	        }
+
+	        return 0;
+
+	    } catch (SQLException e) {
+	        throw new RuntimeException("Errore durante il conteggio degli operatori", e);
+	    }
+	}
+	
+	public long countByStato(String stato) {
+
+	    String query ="SELECT COUNT(*) AS totale " +
+	            "FROM operatori " +
+	            "WHERE stato = ?";
+
+	    try (Connection con = ConnectionFactory.getConnection();
+	    		PreparedStatement ps = con.prepareStatement(query)) {
+
+	        ps.setString(1, stato);
+
+	        ResultSet rs = ps.executeQuery();
+
+	            if (rs.next()) {
+	                return rs.getLong("totale");
+	            }
+
+	            return 0;
+
+	    } catch (SQLException e) {
+	        throw new RuntimeException("Errore durante il conteggio degli operatori per stato", e);
+	    }
+	}
 
 	@Override
 	public Operator findById(int id) {
