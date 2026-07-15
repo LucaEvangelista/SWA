@@ -1,17 +1,23 @@
 package eva.luca.soccorso_Web.resources;
 
 import java.util.List;
+import java.util.Set;
 
 import eva.luca.soccorso_Web.data.MezzoDao;
 import eva.luca.soccorso_Web.models.ErrorResponse;
 import eva.luca.soccorso_Web.models.Mezzo;
+import eva.luca.soccorso_Web.models.PaginatedResponse;
 import eva.luca.soccorso_Web.utility.Logged;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DefaultValue;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -25,48 +31,93 @@ public class MezziRes {
 	@GET
 	@Path("list")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response listaMezzi(@Context SecurityContext securityContext) {
-		
-	    try {
-	    	
-			if (!securityContext.isUserInRole("admin")) {
-			    return Response.status(Response.Status.FORBIDDEN)
-			            .entity(new ErrorResponse("Non hai i permessi per visualizzare la richiesta selezionata"))
-			            .build();
-			}
+	public Response listaMezzi(
+			@DefaultValue("1") @QueryParam("page") int page,
+			@DefaultValue("10") @QueryParam("size") int size,
+	        @Parameter(description = "Filtra i mezzi in base allo stato",
+            schema = @Schema(allowableValues = {
+                    "libero",
+                    "occupato"}))
+			@QueryParam("stato")String stato,
 			
-		} catch (Exception e) {
-			e.printStackTrace();
+			@Context SecurityContext securityContext) {
+
+    	
+		if (!securityContext.isUserInRole("admin")) {
+		    return Response.status(Response.Status.FORBIDDEN)
+		            .entity(new ErrorResponse("Non hai i permessi per visualizzare la richiesta selezionata"))
+		            .build();
 		}
+	    if (page < 1) {
+	        return Response.status(Response.Status.BAD_REQUEST)
+	                .entity(new ErrorResponse("Il numero della pagina deve essere maggiore o uguale a 1"))
+	                .build();
+	    }
 	    
-		List<Mezzo> mezzi = serviceMz.findAll();
+	    if (size < 1 || size > 100) {
+	        return Response.status(Response.Status.BAD_REQUEST)
+	                .entity(new ErrorResponse("La dimensione della pagina deve essere compresa tra 1 e 100"))
+	                .build();
+	    }
+	    
+	    //controllo su stato, se non presente rimane vuoto
+	    //se contiene spazi vengono tolti
+	    if (stato != null) {
+	        stato = stato.trim().toLowerCase();
+
+	        if (stato.isBlank()) {
+	            stato = null;
+	        }
+	    }
+	    
+	    Set<String> statiPermessi = Set.of("libero", "occupato");
+	    
+	    if (stato != null && !statiPermessi.contains(stato)) {
+	        return Response.status(Response.Status.BAD_REQUEST)
+	                .entity(new ErrorResponse("Stato non valido. Valori consentiti; libero e occupato."))
+	                .build();
+	    }
+	    
+	    int offset = (page - 1) * size;
+	    
+		List<Mezzo> mezzi;
 		
-		/*
-		 * impostiamo il codice 200 (ok)
-		 * alleghiamo i dati da trasmettere e generiamo
-		 * la response da restituire
-		 */
+		long totaleMezzi;
 		
-		return Response.ok(mezzi).build();
+	    if (stato == null) {
+	    	// Nessun filtro: restituisce tutti gli operatori
+	    	mezzi = serviceMz.findAllPaginated(offset, size);
+	    	totaleMezzi = serviceMz.countAllMezzi();
+
+	    } else {
+	    	// Filtro per stato
+	    	mezzi = serviceMz.findByStatoPaginated(stato, offset, size);
+	    	totaleMezzi = serviceMz.countByStato(stato);
+	    }
+	    
+	    int totalePagine = (int) Math.ceil((double) totaleMezzi / size);
+	    
+	    PaginatedResponse<Mezzo> risultato = new PaginatedResponse<>(
+	    				mezzi,
+	                    page,
+	                    size,
+	                    totaleMezzi,
+	                    totalePagine);
+
+	    return Response.ok(risultato).build();
 	}
 	
 	@GET
 	@Path("{id:[0-9]+}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getMezzoById(@PathParam("id") int id, @Context SecurityContext securityContext) {
-		
-	    try {
 	    	
-			if (!securityContext.isUserInRole("admin")) {
-			    return Response.status(Response.Status.FORBIDDEN)
-			            .entity(new ErrorResponse("Non hai i permessi per visualizzare la richiesta selezionata"))
-			            .build();
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
+		if (!securityContext.isUserInRole("admin")) {
+		    return Response.status(Response.Status.FORBIDDEN)
+		            .entity(new ErrorResponse("Non hai i permessi per visualizzare la richiesta selezionata"))
+		            .build();
 		}
-	    
+    
 		Mezzo mz = serviceMz.findById(id);
 		
 		if(mz == null) {
@@ -82,17 +133,11 @@ public class MezziRes {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response createMezzo(Mezzo mz, @Context SecurityContext securityContext) {
-		
-	    try {
 	    	
-			if (!securityContext.isUserInRole("admin")) {
-			    return Response.status(Response.Status.FORBIDDEN)
-			            .entity(new ErrorResponse("Non hai i permessi per visualizzare la richiesta selezionata"))
-			            .build();
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
+		if (!securityContext.isUserInRole("admin")) {
+		    return Response.status(Response.Status.FORBIDDEN)
+		            .entity(new ErrorResponse("Non hai i permessi per visualizzare la richiesta selezionata"))
+		            .build();
 		}
 	    
 		

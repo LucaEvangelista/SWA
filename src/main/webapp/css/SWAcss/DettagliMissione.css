@@ -1,0 +1,51 @@
+@charset "UTF-8";
+        body {
+            min-height: 100vh;
+            background-color: #f8f9fa;
+        }
+
+        .navbar-brand {
+            letter-spacing: 0.02em;
+        }
+
+        .page-header {
+            background: linear-gradient(135deg, #0d6efd, #084298);
+        }
+
+        .mission-card {
+            overflow: hidden;
+            border-radius: 0.75rem;
+        }
+
+        .detail-box {
+            height: 100%;
+            padding: 1.25rem;
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 0.65rem;
+        }
+
+        .detail-label {
+            display: block;
+            margin-bottom: 0.4rem;
+            color: #6c757d;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .detail-value {
+            margin-bottom: 0;
+            color: #212529;
+            font-size: 1.05rem;
+            overflow-wrap: anywhere;
+        }
+
+        #stato-missione {
+            text-transform: capitalize;
+        }
+
+        .site-footer {
+            background-color: #212529;
+        }

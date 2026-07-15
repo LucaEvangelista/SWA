@@ -300,4 +300,34 @@ CREATE TABLE token_blacklist(
     revoked_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Inserimento di 5 nuove squadre
+INSERT INTO squadre (nome) VALUES
+('Squadra Gamma'),
+('Squadra Delta'),
+('Squadra Epsilon'),
+('Squadra Zeta'),
+('Squadra Omega');
 
+
+-- Associazione degli operatori alle nuove squadre
+INSERT INTO appartenenza (operatoreRIF, squadraRIF, caposquadra) VALUES
+
+-- Squadra Gamma: Francesca Marini caposquadra, Davide Conti membro
+(6, 3, TRUE),
+(7, 3, FALSE),
+
+-- Squadra Delta: Elena Ferrari caposquadra, Simone Romano membro
+(8, 4, TRUE),
+(9, 4, FALSE),
+
+-- Squadra Epsilon: Chiara Moretti caposquadra, Matteo Ricci membro
+(10, 5, TRUE),
+(11, 5, FALSE),
+
+-- Squadra Zeta: Sara Galli caposquadra, Alessandro Lombardi membro
+(12, 6, TRUE),
+(13, 6, FALSE),
+
+-- Squadra Omega: Martina Esposito caposquadra, Federico Rinaldi membro
+(14, 7, TRUE),
+(15, 7, FALSE);

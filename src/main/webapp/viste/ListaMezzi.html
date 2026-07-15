@@ -4,15 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Lista richieste - Soccorso Web</title>
+    <title>Lista mezzi - Soccorso Web</title>
 
     <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
         rel="stylesheet">
 
     <link
-        href="/soccorso_Web_SWA/css/SWAcss/ListaRichieste.css"
+        href="/soccorso_Web_SWA/css/SWAcss/ListaMezzi.css"
         rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer">
 </head>
 
 <body class="d-flex flex-column">
@@ -21,7 +28,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
         <div class="container">
 
-            <a class="navbar-brand fw-bold" href="ListaRichieste.html">
+            <a class="navbar-brand fw-bold" href="ListaMezzi.html">
                 Soccorso Web
             </a>
 
@@ -41,10 +48,7 @@
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
 
                     <li class="nav-item">
-                        <a
-                            class="nav-link active"
-                            aria-current="page"
-                            href="ListaRichieste.html">
+                        <a class="nav-link" href="ListaRichieste.html">
                             Richieste
                         </a>
                     </li>
@@ -60,9 +64,12 @@
                             Operatori
                         </a>
                     </li>
-                    
+
                     <li class="nav-item">
-                        <a class="nav-link" href="ListaMezzi.html">
+                        <a
+                            class="nav-link active"
+                            aria-current="page"
+                            href="ListaMezzi.html">
                             Mezzi
                         </a>
                     </li>
@@ -81,30 +88,40 @@
     <!-- =============== FINE NAVBAR =============== -->
 
 
-    <!-- ================= HEADER / LEAD ================= -->
+    <!-- ================= HEADER ================= -->
     <header class="page-header text-white py-5">
         <div class="container">
             <div class="row align-items-center g-4">
 
                 <div class="col-lg-8">
                     <p class="text-uppercase fw-semibold mb-2 opacity-75">
-                        Gestione delle emergenze
+                        Gestione delle risorse
                     </p>
 
                     <h1 class="display-6 fw-bold mb-3">
-                        Lista richieste di soccorso
+                        Lista mezzi
                     </h1>
 
                     <p class="lead mb-0">
-                        Consulta le richieste ricevute, filtrale in base alla fase
-                        e apri il dettaglio completo di ogni segnalazione.
+                        Consulta i mezzi registrati e filtra l’elenco in base
+                        alla loro disponibilità operativa.
                     </p>
+                </div>
+
+                <div class="col-lg-4 text-lg-end">
+                    <a
+                        href="NuovoMezzo.html"
+                        class="btn btn-light text-primary fw-semibold px-4 py-2">
+
+                        <i class="fa-solid fa-plus me-1"></i>
+                        Aggiungi
+                    </a>
                 </div>
 
             </div>
         </div>
     </header>
-    <!-- =============== FINE HEADER / LEAD =============== -->
+    <!-- =============== FINE HEADER =============== -->
 
 
     <!-- ================= CONTENUTO PRINCIPALE ================= -->
@@ -115,7 +132,7 @@
             id="messaggio-errore"
             class="alert alert-danger d-none mb-4"
             role="alert"
-            aria-live="polite">
+            aria-live="assertive">
         </div>
         <!-- =============== FINE ERRORI =============== -->
 
@@ -123,7 +140,7 @@
         <!-- ================= FILTRI ================= -->
         <section
             class="card filter-card border-0 shadow-sm mb-4"
-            aria-labelledby="titolo-filtri-richieste">
+            aria-labelledby="titolo-filtri-mezzi">
 
             <div class="card-header bg-white border-0 px-4 pt-4 pb-0">
                 <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-start gap-3">
@@ -133,16 +150,16 @@
                             Ricerca e visualizzazione
                         </p>
 
-                        <h2 id="titolo-filtri-richieste" class="h4 mb-0">
-                            Filtra le richieste
+                        <h2 id="titolo-filtri-mezzi" class="h4 mb-0">
+                            Filtra i mezzi
                         </h2>
                     </div>
 
                     <span
-                        id="totale-richieste"
-                        class="request-total">
+                        id="totale-mezzi"
+                        class="vehicle-total">
 
-                        Richieste trovate: 0
+                        Mezzi trovati: 0
                     </span>
 
                 </div>
@@ -154,34 +171,26 @@
                     <div class="col-md-6">
 
                         <label
-                            for="filtro-stato-richieste"
+                            for="filtro-stato-mezzi"
                             class="form-label fw-semibold">
 
                             Filtra per stato
                         </label>
 
                         <select
-                            id="filtro-stato-richieste"
+                            id="filtro-stato-mezzi"
                             class="form-select">
 
-                            <option value="tutte">
-                                Tutte le richieste
+                            <option value="">
+                                Tutti i mezzi
                             </option>
 
-                            <option value="attiva">
-                                Attiva
+                            <option value="libero">
+                                Liberi
                             </option>
 
-                            <option value="in esecuzione">
-                                In esecuzione
-                            </option>
-
-                            <option value="terminata">
-                                Terminata
-                            </option>
-
-                            <option value="rifiutata">
-                                Rifiutata
+                            <option value="occupato">
+                                Occupati
                             </option>
 
                         </select>
@@ -194,7 +203,7 @@
                             for="dimensione-pagina"
                             class="form-label fw-semibold">
 
-                            Richieste per pagina
+                            Mezzi per pagina
                         </label>
 
                         <select
@@ -230,24 +239,24 @@
 
         <!-- ================= TABELLA ================= -->
         <section
-            class="card request-list-card border-0 shadow-sm"
-            aria-labelledby="titolo-lista-richieste">
+            class="card vehicle-list-card border-0 shadow-sm"
+            aria-labelledby="titolo-lista-mezzi">
 
             <div class="card-header bg-white border-0 px-4 py-4">
                 <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2">
 
                     <div>
                         <p class="section-kicker mb-1">
-                            Segnalazioni ricevute
+                            Risorse operative
                         </p>
 
-                        <h2 id="titolo-lista-richieste" class="h4 mb-0">
-                            Elenco delle richieste
+                        <h2 id="titolo-lista-mezzi" class="h4 mb-0">
+                            Elenco dei mezzi
                         </h2>
                     </div>
 
                     <p class="text-muted small mb-0">
-                        Seleziona “Dettagli” per aprire la richiesta completa.
+                        Lo stato indica se il mezzo può essere assegnato a una missione.
                     </p>
 
                 </div>
@@ -256,32 +265,24 @@
             <div class="card-body p-0">
                 <div class="table-responsive">
 
-                    <table class="table request-table align-middle mb-0">
+                    <table class="table vehicle-table align-middle mb-0">
 
                         <thead>
                             <tr>
-                                <th scope="col">Nome</th>
-                                <th scope="col">Email</th>
-                                <th scope="col">Luogo</th>
-                                <th scope="col">Descrizione</th>
-                                <th scope="col">Fase</th>
-                                <th scope="col">Ricezione</th>
-                                <th scope="col">Inizio lavorazione</th>
-                                <th scope="col">Chiusura</th>
-                                <th scope="col" class="text-center">
-                                    Dettagli
-                                </th>
+                                <th scope="col">Tipologia</th>
+                                <th scope="col">Seriale</th>
+                                <th scope="col">Stato</th>
                             </tr>
                         </thead>
 
-                        <tbody id="corpo-tabella-richieste">
+                        <tbody id="corpo-tabella-mezzi">
 
                             <tr>
                                 <td
-                                    colspan="9"
+                                    colspan="4"
                                     class="text-center text-muted py-5">
 
-                                    Caricamento richieste...
+                                    Caricamento mezzi...
                                 </td>
                             </tr>
 
@@ -296,8 +297,8 @@
             <div class="card-footer bg-white border-0 px-4 py-4">
 
                 <nav
-                    class="request-pagination d-flex flex-column flex-sm-row justify-content-center align-items-center gap-3"
-                    aria-label="Paginazione richieste">
+                    class="vehicle-pagination d-flex flex-column flex-sm-row justify-content-center align-items-center gap-3"
+                    aria-label="Paginazione mezzi">
 
                     <button
                         type="button"
@@ -355,7 +356,7 @@
     <!-- =============== FINE FOOTER =============== -->
 
 
-    <script src="/soccorso_Web_SWA/js/SWAscript/RqstScript.js"></script>
+    <script src="/soccorso_Web_SWA/js/SWAscript/MzScript.js"></script>
 
     <script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">

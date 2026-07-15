@@ -64,6 +64,112 @@ public class MezzoDao implements IDaoRead<Mezzo>, IDaoWrite<Mezzo> {
 		}
 		return list;
 	}
+	
+	public ArrayList<Mezzo> findAllPaginated(int offset, int size) {
+		
+		String query = "SELECT * FROM mezzi " +
+						"ORDER BY mezzoID " + 
+						"LIMIT ? OFFSET ?;";
+		
+		ArrayList<Mezzo> list = new ArrayList<>();
+		
+		try (Connection con = ConnectionFactory.getConnection();
+				PreparedStatement ps = con.prepareStatement(query)){
+			
+	        ps.setInt(1, size);
+	        ps.setInt(2, offset);
+
+	        ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				Mezzo mz = new Mezzo();
+				mz.setTipologia(rs.getString("tipo"));
+				mz.setSeriale(rs.getString("seriale"));
+				mz.setId(rs.getInt("mezzoID"));
+				mz.setStatus(rs.getString("stato"));
+				
+				list.add(mz);
+			}
+			
+		} catch (SQLException e) {
+			throw new RuntimeException("JDBC error", e);
+		}
+		return list;
+	}
+	
+	public ArrayList<Mezzo> findByStatoPaginated(String stato, int offset, int size) {
+		
+		String query = "SELECT * FROM mezzi " +
+				"WHERE stato = ? " +
+				"ORDER BY mezzoID " + 
+				"LIMIT ? OFFSET ?;";
+		
+		ArrayList<Mezzo> list = new ArrayList<>();
+		
+		try (Connection con = ConnectionFactory.getConnection();
+				PreparedStatement ps = con.prepareStatement(query)){
+			
+	        ps.setString(1, stato);
+	        ps.setInt(2, size);
+	        ps.setInt(3, offset);
+
+	        ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				Mezzo mz = new Mezzo();
+				mz.setTipologia(rs.getString("tipo"));
+				mz.setSeriale(rs.getString("seriale"));
+				mz.setId(rs.getInt("mezzoID"));
+				mz.setStatus(rs.getString("stato"));
+				
+				list.add(mz);
+			}
+			
+		} catch (SQLException e) {
+			throw new RuntimeException("JDBC error", e);
+		}
+		return list;
+	}
+	
+	public long countAllMezzi() {
+
+	    String query ="SELECT COUNT(*) AS totale FROM mezzi";
+
+	    try (Connection con = ConnectionFactory.getConnection();
+	    		PreparedStatement ps = con.prepareStatement(query);
+	    		ResultSet rs = ps.executeQuery()) {
+
+	        if (rs.next()) {
+	            return rs.getLong("totale");
+	        }
+
+	        return 0;
+
+	    } catch (SQLException e) {
+	        throw new RuntimeException("Errore durante il conteggio dei mezzi", e);
+	    }
+	}
+	
+	public long countByStato(String stato) {
+		
+	    String query ="SELECT COUNT(*) AS totale " +
+	            "FROM mezzi " +
+	            "WHERE stato = ?";
+		
+		try (Connection con = ConnectionFactory.getConnection();
+				PreparedStatement ps = con.prepareStatement(query);
+				ResultSet rs = ps.executeQuery()) {
+			
+			if (rs.next()) {
+				return rs.getLong("totale");
+			}
+			
+			return 0;
+			
+		} catch (SQLException e) {
+			throw new RuntimeException("Errore durante il conteggio dei mezzi per stato", e);
+		}
+	}
 
 	@Override
 	public Mezzo findById(int id) {

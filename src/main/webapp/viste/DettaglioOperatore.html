@@ -2,122 +2,332 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <title>Dettaglio Operatore</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Dettaglio operatore - Soccorso Web</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+    <link
+        href="/soccorso_Web_SWA/css/SWAcss/DettaglioOperatore.css"
+        rel="stylesheet">
 </head>
 
-<body class="container mt-4">
+<body class="d-flex flex-column">
 
-    <h1>Dettaglio Operatore</h1>
+    <!-- ================= NAVBAR ================= -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+        <div class="container">
 
-    <div id="messaggio-errore" class="text-danger mb-3"></div>
+            <a class="navbar-brand fw-bold" href="ListaOperatori.html">
+                Soccorso Web
+            </a>
 
-    <div class="card">
-        <div class="card-body">
-            <p><strong>Nome:</strong> <span id="op-name"></span></p>
-            <p><strong>Cognome:</strong> <span id="op-surname"></span></p>
-            <p><strong>Email:</strong> <span id="op-email"></span></p>
-            <p><strong>Data di nascita:</strong> <span id="op-age"></span></p>
-        </div>
-    </div>
-    
-	<hr>
-	
-<h1>Patenti Operatore</h1>
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarPrincipale"
+                aria-controls="navbarPrincipale"
+                aria-expanded="false"
+                aria-label="Apri il menu di navigazione">
 
-<div id="messaggio-patenti" class="mb-3"></div>
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-<div class="card mb-3">
-    <div class="card-header">
-        Aggiungi patente
-    </div>
+            <div class="collapse navbar-collapse" id="navbarPrincipale">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
 
-    <div class="card-body">
-        <div class="row g-2">
-            <div class="col-md-8">
-                <select id="select-patenti" class="form-select">
-                    <option value="">Caricamento patenti...</option>
-                </select>
+                    <li class="nav-item">
+                        <a class="nav-link" href="ListaRichieste.html">
+                            Richieste
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="ListaMissioni.html">
+                            Missioni
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a
+                            class="nav-link active"
+                            aria-current="page"
+                            href="ListaOperatori.html">
+                            Operatori
+                        </a>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a class="nav-link" href="ListaMezzi.html">
+                            Mezzi
+                        </a>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a class="nav-link" href="ListaMateriali.html">
+                            Materiali
+                        </a>
+                    </li>
+
+                </ul>
             </div>
 
-            <div class="col-md-4">
-                <button type="button" class="btn btn-primary w-100" onclick="aggiungiPatenteSelezionata()">
-                    Aggiungi patente
-                </button>
+        </div>
+    </nav>
+    <!-- =============== FINE NAVBAR =============== -->
+
+
+    <!-- ================= HEADER / LEAD ================= -->
+    <header class="page-header text-white py-5">
+        <div class="container">
+            <div class="row align-items-center g-4">
+
+                <div class="col-lg-8">
+                    <p class="text-uppercase fw-semibold mb-2 opacity-75">
+                        Gestione del personale
+                    </p>
+
+                    <h1 class="display-6 fw-bold mb-3">
+                        Dettaglio operatore
+                    </h1>
+
+                    <p class="lead mb-0">
+                        Consulta i dati anagrafici, gestisci patenti e abilità
+                        e visualizza lo storico delle missioni dell’operatore.
+                    </p>
+                </div>
+
+                <div class="col-lg-4 text-lg-end">
+                    <a href="ListaOperatori.html" class="btn btn-light">
+                        Torna alla lista operatori
+                    </a>
+                </div>
+
             </div>
         </div>
-    </div>
-</div>
+    </header>
+    <!-- =============== FINE HEADER / LEAD =============== -->
 
-<div class="card">
-    <div class="card-body">
-        <ul id="lista-patenti" class="list-group">
-            <!-- Qui verranno inserite le patenti -->
-        </ul>
-    </div>
-</div>
-    
-	<hr>
-	
-	<h1>Abilità Operatore</h1>
-	
-	<div id="messaggio-abilita"></div>
-	
-	<div class="card mb-3">
-    	<div class="card-header">
-        	Aggiungi abilità
-    	</div>
 
-    <div class="card-body">
-        <div class="row g-2">
-            <div class="col-md-8">
-                <select id="select-abilita" class="form-select">
-                    <option value="">Caricamento abilità...</option>
-                </select>
+    <!-- ================= CONTENUTO PRINCIPALE ================= -->
+    <main class="container flex-grow-1 py-5">
+
+        <div
+            id="messaggio-errore"
+            class="alert alert-danger page-message"
+            role="alert"
+            aria-live="assertive">
+        </div>
+
+        <!-- ================= DATI OPERATORE ================= -->
+        <section class="content-card card border-0 shadow-sm mb-5" aria-labelledby="titolo-dati-operatore">
+            <div class="card-header bg-white border-0 px-4 py-4">
+                <p class="section-kicker mb-1">Profilo</p>
+                <h2 id="titolo-dati-operatore" class="h4 mb-0">
+                    Informazioni dell’operatore
+                </h2>
             </div>
 
-            <div class="col-md-4">
-                <button type="button" class="btn btn-primary w-100" onclick="aggiungiAbilitaSelezionata()">
-                    Aggiungi patente
-                </button>
+            <div class="card-body p-4">
+                <div class="row g-4">
+
+                    <div class="col-sm-6 col-lg-3">
+                        <div class="detail-box">
+                            <span class="detail-label">Nome</span>
+                            <p id="op-name" class="detail-value"></p>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 col-lg-3">
+                        <div class="detail-box">
+                            <span class="detail-label">Cognome</span>
+                            <p id="op-surname" class="detail-value"></p>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 col-lg-3">
+                        <div class="detail-box">
+                            <span class="detail-label">Email</span>
+                            <p id="op-email" class="detail-value"></p>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 col-lg-3">
+                        <div class="detail-box">
+                            <span class="detail-label">Data di nascita</span>
+                            <p id="op-age" class="detail-value"></p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+        <!-- =============== FINE DATI OPERATORE =============== -->
+
+
+        <!-- ================= PATENTI ================= -->
+        <section class="content-card card border-0 shadow-sm mb-5" aria-labelledby="titolo-patenti">
+            <div class="card-header bg-white border-0 px-4 py-4">
+                <p class="section-kicker mb-1">Qualifiche di guida</p>
+                <h2 id="titolo-patenti" class="h4 mb-0">
+                    Patenti dell’operatore
+                </h2>
+            </div>
+
+            <div class="card-body p-4">
+                <div id="messaggio-patenti" class="page-message" aria-live="polite"></div>
+
+                <div class="management-box mb-4">
+                    <h3 class="h6 fw-bold mb-3">Aggiungi una patente</h3>
+
+                    <div class="row g-3 align-items-end">
+                        <div class="col-md-8">
+                            <label for="select-patenti" class="form-label">
+                                Patente disponibile
+                            </label>
+
+                            <select id="select-patenti" class="form-select">
+                                <option value="">Caricamento patenti...</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-4">
+                            <button
+                                type="button"
+                                class="btn btn-primary w-100"
+                                onclick="aggiungiPatenteSelezionata()">
+                                Aggiungi patente
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="h6 fw-bold mb-3">Patenti associate</h3>
+
+                    <ul id="lista-patenti" class="list-group qualification-list">
+                        <!-- Le patenti vengono inserite da DettaglioOperatore.js -->
+                    </ul>
+                </div>
+            </div>
+        </section>
+        <!-- =============== FINE PATENTI =============== -->
+
+
+        <!-- ================= ABILITÀ ================= -->
+        <section class="content-card card border-0 shadow-sm mb-5" aria-labelledby="titolo-abilita">
+            <div class="card-header bg-white border-0 px-4 py-4">
+                <p class="section-kicker mb-1">Competenze operative</p>
+                <h2 id="titolo-abilita" class="h4 mb-0">
+                    Abilità dell’operatore
+                </h2>
+            </div>
+
+            <div class="card-body p-4">
+                <div id="messaggio-abilita" class="page-message" aria-live="polite"></div>
+
+                <div class="management-box mb-4">
+                    <h3 class="h6 fw-bold mb-3">Aggiungi un’abilità</h3>
+
+                    <div class="row g-3 align-items-end">
+                        <div class="col-md-8">
+                            <label for="select-abilita" class="form-label">
+                                Abilità disponibile
+                            </label>
+
+                            <select id="select-abilita" class="form-select">
+                                <option value="">Caricamento abilità...</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-4">
+                            <button
+                                type="button"
+                                class="btn btn-primary w-100"
+                                onclick="aggiungiAbilitaSelezionata()">
+                                Aggiungi abilità
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="h6 fw-bold mb-3">Abilità associate</h3>
+
+                    <ul id="lista-abilita" class="list-group qualification-list">
+                        <!-- Le abilità vengono inserite da DettaglioOperatore.js -->
+                    </ul>
+                </div>
+            </div>
+        </section>
+        <!-- =============== FINE ABILITÀ =============== -->
+
+
+        <!-- ================= STORICO MISSIONI ================= -->
+        <section class="content-card card border-0 shadow-sm" aria-labelledby="titolo-storico">
+            <div class="card-header bg-white border-0 px-4 py-4">
+                <p class="section-kicker mb-1">Attività svolte</p>
+                <h2 id="titolo-storico" class="h4 mb-0">
+                    Storico missioni
+                </h2>
+            </div>
+
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table mission-history-table align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th scope="col">Obiettivo</th>
+                                <th scope="col">Posizione</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="corpo-storico-missioni">
+                            <!-- Le missioni vengono inserite da DettaglioOperatore.js -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card-footer bg-white border-top px-4 py-4">
+                <a href="ListaOperatori.html" class="btn btn-outline-secondary">
+                    Torna alla lista
+                </a>
+            </div>
+        </section>
+        <!-- =============== FINE STORICO MISSIONI =============== -->
+
+    </main>
+    <!-- =============== FINE CONTENUTO PRINCIPALE =============== -->
+
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="site-footer text-white-50 py-4 mt-auto">
+        <div class="container">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2">
+
+                <p class="mb-0 fw-semibold text-white">
+                    Soccorso Web
+                </p>
+
+                <p class="mb-0 small">
+                    Sistema di gestione delle richieste, degli operatori e delle missioni di soccorso.
+                </p>
+
             </div>
         </div>
-    </div>
-</div>
+    </footer>
+    <!-- =============== FINE FOOTER =============== -->
 
-    <div class="card">
-        <div class="card-body">
-	        <ul id="lista-abilita" class="list-group">
-	            <!-- Qui verranno inserite le abilità -->
-	        </ul>
-        </div>
-    </div>
-    
-    <hr>
-
-<h1>Storico Missioni</h1>
-
-<div class="card">
-    <div class="card-body">
-        <table class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th>Obiettivo</th>
-                    <th>Posizione</th>
-                </tr>
-            </thead>
-
-            <tbody id="corpo-storico-missioni">
-                <!-- Qui verranno inserite le missioni -->
-            </tbody>
-        </table>
-    </div>
-</div>
-
-    <a href="ListaOperatori.html" class="btn btn-secondary mt-3">Torna alla lista</a>
 
     <script src="/soccorso_Web_SWA/js/SWAscript/DettaglioOperatore.js"></script>
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+    </script>
 
 </body>
 </html>

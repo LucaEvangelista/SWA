@@ -1,0 +1,121 @@
+@charset "UTF-8";
+body {
+    min-height: 100vh;
+    background-color: #f8f9fa;
+}
+
+.navbar-brand {
+    letter-spacing: 0.02em;
+}
+
+.page-header {
+    background: linear-gradient(135deg, #0d6efd, #084298);
+}
+
+.content-card {
+    overflow: hidden;
+    border-radius: 0.75rem;
+}
+
+.section-kicker {
+    color: #0d6efd;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.detail-box {
+    height: 100%;
+    padding: 1.25rem;
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 0.65rem;
+}
+
+.detail-label {
+    display: block;
+    margin-bottom: 0.4rem;
+    color: #6c757d;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.detail-value {
+    min-height: 1.6rem;
+    margin-bottom: 0;
+    color: #212529;
+    font-size: 1.05rem;
+    overflow-wrap: anywhere;
+}
+
+.management-box {
+    padding: 1.25rem;
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 0.65rem;
+}
+
+.page-message:empty {
+    display: none;
+}
+
+.page-message:not(:empty) {
+    margin-bottom: 1rem;
+}
+
+.qualification-list .list-group-item {
+    padding: 0.9rem 1rem;
+    border-color: #e9ecef;
+}
+
+.qualification-list .list-group-item::before {
+    margin-right: 0.65rem;
+    color: #0d6efd;
+    content: "•";
+    font-weight: 700;
+}
+
+.mission-history-table thead th {
+    padding: 1rem 1.5rem;
+    color: #495057;
+    background-color: #f8f9fa;
+    border-bottom-width: 1px;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.mission-history-table tbody td {
+    padding: 1rem 1.5rem;
+}
+
+.mission-history-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.site-footer {
+    background-color: #212529;
+}
+
+@media (max-width: 575.98px) {
+    .page-header {
+        padding-top: 2.5rem !important;
+        padding-bottom: 2.5rem !important;
+    }
+
+    .content-card .card-header,
+    .content-card .card-body,
+    .content-card .card-footer {
+        padding-right: 1.25rem !important;
+        padding-left: 1.25rem !important;
+    }
+
+    .mission-history-table thead th,
+    .mission-history-table tbody td {
+        padding-right: 1rem;
+        padding-left: 1rem;
+    }
+}

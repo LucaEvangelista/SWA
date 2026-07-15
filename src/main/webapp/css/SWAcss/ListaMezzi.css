@@ -1,0 +1,169 @@
+@charset "UTF-8";
+
+body {
+    min-height: 100vh;
+    background-color: #f8f9fa;
+}
+
+.navbar-brand {
+    letter-spacing: 0.02em;
+}
+
+.page-header {
+    background: linear-gradient(135deg, #0d6efd, #084298);
+}
+
+.filter-card,
+.vehicle-list-card {
+    overflow: hidden;
+    border-radius: 0.75rem;
+}
+
+.section-kicker {
+    color: #0d6efd;
+    font-weight: 600;
+}
+
+.vehicle-total {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.25rem;
+    padding: 0.45rem 0.85rem;
+    border: 1px solid #cfe2ff;
+    border-radius: 50rem;
+    color: #084298;
+    background-color: #e7f1ff;
+    font-size: 0.9rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.form-label {
+    color: #495057;
+}
+
+.form-select {
+    min-height: 3rem;
+    border-color: #ced4da;
+}
+
+.form-select:focus {
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+}
+
+.vehicle-table {
+    min-width: 760px;
+}
+
+.vehicle-table thead th {
+    padding: 1rem 1.25rem;
+    border-bottom-width: 1px;
+    background-color: #f1f4f8;
+    color: #495057;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.vehicle-table tbody td {
+    padding: 1rem 1.25rem;
+    border-color: #edf0f3;
+    color: #343a40;
+    vertical-align: middle;
+}
+
+.vehicle-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.vehicle-table tbody tr:hover td {
+    background-color: #f8fbff;
+}
+
+#corpo-tabella-mezzi td:nth-child(1) {
+    width: 6rem;
+    font-weight: 600;
+}
+
+#corpo-tabella-mezzi td:nth-child(3) {
+    overflow-wrap: anywhere;
+}
+
+#corpo-tabella-mezzi td:nth-child(4) {
+    width: 10rem;
+}
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 6.5rem;
+    padding: 0.45rem 0.75rem;
+    border-radius: 50rem;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: capitalize;
+}
+
+.status-libero {
+    color: #0f5132;
+    background-color: #d1e7dd;
+}
+
+.status-occupato {
+    color: #842029;
+    background-color: #f8d7da;
+}
+
+.status-sconosciuto {
+    color: #41464b;
+    background-color: #e2e3e5;
+}
+
+.vehicle-pagination {
+    min-height: 2.5rem;
+}
+
+.pagination-button {
+    min-width: 8rem;
+}
+
+.pagination-info {
+    min-width: 8rem;
+    color: #495057;
+    font-weight: 600;
+    text-align: center;
+}
+
+.site-footer {
+    background-color: #212529;
+}
+
+@media (max-width: 767.98px) {
+    .page-header {
+        text-align: center;
+    }
+
+    .filter-card .card-header,
+    .vehicle-list-card .card-header {
+        text-align: center;
+    }
+
+    .vehicle-total {
+        align-self: center;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .pagination-button {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .vehicle-pagination {
+        width: 100%;
+    }
+}

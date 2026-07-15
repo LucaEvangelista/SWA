@@ -64,6 +64,112 @@ public class MaterialeDao implements IDaoRead<Materiale>, IDaoWrite<Materiale>{
 		}
 		return list;
 	}
+	
+	public ArrayList<Materiale> findAllPaginated(int offset, int size) {
+		
+		String query = "SELECT * FROM materiali " +
+						"ORDER BY materialeID " + 
+						"LIMIT ? OFFSET ?;";
+		
+		ArrayList<Materiale> list = new ArrayList<Materiale>();
+		
+		try (Connection con = ConnectionFactory.getConnection();
+				PreparedStatement ps = con.prepareStatement(query)){
+			
+	        ps.setInt(1, size);
+	        ps.setInt(2, offset);
+
+	        ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				Materiale m = new Materiale();
+				m.setTipologia(rs.getString("tipo"));
+				m.setSeriale(rs.getString("seriale"));
+				m.setId(rs.getInt("materialeID"));
+				m.setStatus(rs.getString("stato"));
+				
+				list.add(m);
+			}
+			
+		} catch (SQLException e) {
+			throw new RuntimeException("JDBC error", e);
+		}
+		return list;
+	}
+	
+	public ArrayList<Materiale> findByStatoPaginated(String stato, int offset, int size) {
+		
+		String query = "SELECT * FROM materiali " +
+				"WHERE stato = ? " +
+				"ORDER BY materialeID " + 
+				"LIMIT ? OFFSET ?;";
+		
+		ArrayList<Materiale> list = new ArrayList<Materiale>();
+		
+		try (Connection con = ConnectionFactory.getConnection();
+				PreparedStatement ps = con.prepareStatement(query)){
+			
+	        ps.setString(1, stato);
+	        ps.setInt(2, size);
+	        ps.setInt(3, offset);
+
+	        ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				Materiale m = new Materiale();
+				m.setTipologia(rs.getString("tipo"));
+				m.setSeriale(rs.getString("seriale"));
+				m.setId(rs.getInt("materialeID"));
+				m.setStatus(rs.getString("stato"));
+				
+				list.add(m);
+			}
+			
+		} catch (SQLException e) {
+			throw new RuntimeException("JDBC error", e);
+		}
+		return list;
+	}
+	
+	public long countAllMateriali() {
+
+	    String query ="SELECT COUNT(*) AS totale FROM materiali";
+
+	    try (Connection con = ConnectionFactory.getConnection();
+	    		PreparedStatement ps = con.prepareStatement(query);
+	    		ResultSet rs = ps.executeQuery()) {
+
+	        if (rs.next()) {
+	            return rs.getLong("totale");
+	        }
+
+	        return 0;
+
+	    } catch (SQLException e) {
+	        throw new RuntimeException("Errore durante il conteggio dei materiali", e);
+	    }
+	}
+	
+	public long countByStato(String stato) {
+		
+	    String query ="SELECT COUNT(*) AS totale " +
+	            "FROM materiali " +
+	            "WHERE stato = ?";
+		
+		try (Connection con = ConnectionFactory.getConnection();
+				PreparedStatement ps = con.prepareStatement(query);
+				ResultSet rs = ps.executeQuery()) {
+			
+			if (rs.next()) {
+				return rs.getLong("totale");
+			}
+			
+			return 0;
+			
+		} catch (SQLException e) {
+			throw new RuntimeException("Errore durante il conteggio dei materiali per stato", e);
+		}
+	}
 
 	@Override
 	public Materiale findById(int id) {

@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Nuovo mezzo - Soccorso Web</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <link
+        href="/soccorso_Web_SWA/css/SWAcss/NuovoMezzo.css"
+        rel="stylesheet">
+
+    <script
+        src="/soccorso_Web_SWA/js/SWAscript/NuovoMezzo.js"
+        defer>
+    </script>
+</head>
+
+<body class="d-flex flex-column">
+
+    <!-- ================= NAVBAR ================= -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+        <div class="container">
+
+            <a class="navbar-brand fw-bold" href="ListaMezzi.html">
+                Soccorso Web
+            </a>
+
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarPrincipale"
+                aria-controls="navbarPrincipale"
+                aria-expanded="false"
+                aria-label="Apri il menu di navigazione">
+
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarPrincipale">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="ListaRichieste.html">
+                            Richieste
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="ListaMissioni.html">
+                            Missioni
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="ListaOperatori.html">
+                            Operatori
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a
+                            class="nav-link active"
+                            aria-current="page"
+                            href="ListaMezzi.html">
+
+                            Mezzi
+                        </a>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a class="nav-link" href="ListaMateriali.html">
+                            Materiali
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
+
+        </div>
+    </nav>
+    <!-- =============== FINE NAVBAR =============== -->
+
+
+    <!-- ================= HEADER ================= -->
+    <header class="page-header text-white py-5">
+        <div class="container">
+            <div class="row align-items-center g-4">
+
+                <div class="col-lg-8">
+
+                    <p class="text-uppercase fw-semibold mb-2 opacity-75">
+                        Gestione delle risorse
+                    </p>
+
+                    <h1 class="display-6 fw-bold mb-3">
+                        Aggiungi un nuovo mezzo
+                    </h1>
+
+                    <p class="lead mb-0">
+                        Inserisci la tipologia e il numero seriale per registrare
+                        un nuovo mezzo nel sistema.
+                    </p>
+
+                </div>
+
+                <div class="col-lg-4 text-lg-end">
+
+                    <a
+                        href="ListaMezzi.html"
+                        class="btn btn-light btn-lg px-4">
+
+                        Torna ai mezzi
+                    </a>
+
+                </div>
+
+            </div>
+        </div>
+    </header>
+    <!-- =============== FINE HEADER =============== -->
+
+
+    <!-- ================= CONTENUTO PRINCIPALE ================= -->
+    <main class="container flex-grow-1 py-5">
+
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-8 col-xl-7">
+
+                <section
+                    class="card mezzo-form-card border-0 shadow-sm"
+                    aria-labelledby="titolo-form-mezzo">
+
+                    <div class="card-header bg-white border-0 px-4 pt-4 pb-0">
+
+                        <p class="section-kicker mb-1">
+                            Nuova registrazione
+                        </p>
+
+                        <h2 id="titolo-form-mezzo" class="h4 mb-0">
+                            Dati del nuovo mezzo
+                        </h2>
+
+                        <p class="text-muted mt-2 mb-0">
+                            Compila entrambi i campi prima di inviare il modulo.
+                        </p>
+
+                    </div>
+
+                    <div class="card-body px-4 py-4">
+
+                        <!-- ================= MESSAGGIO ================= -->
+                        <div
+                            id="messaggio"
+                            class="alert d-none mb-4"
+                            role="alert"
+                            aria-live="polite">
+                        </div>
+                        <!-- =============== FINE MESSAGGIO =============== -->
+
+
+                        <form id="form-nuovo-mezzo" novalidate>
+
+                            <fieldset class="form-section">
+
+                                <legend class="form-section-title">
+                                    Informazioni del mezzo
+                                </legend>
+
+                                <div class="row g-4">
+
+                                    <!-- TIPOLOGIA -->
+                                    <div class="col-12">
+
+                                        <label
+                                            for="tipologia"
+                                            class="form-label fw-semibold">
+
+                                            Tipologia
+                                        </label>
+
+                                        <input
+                                            type="text"
+                                            id="tipologia"
+                                            name="tipologia"
+                                            class="form-control"
+                                            maxlength="100"
+                                            placeholder="Esempio: Ambulanza"
+                                            autocomplete="off"
+                                            required>
+
+                                        <div class="invalid-feedback">
+                                            Inserisci la tipologia del mezzo.
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- SERIALE -->
+                                    <div class="col-12">
+
+                                        <label
+                                            for="seriale"
+                                            class="form-label fw-semibold">
+
+                                            Numero seriale
+                                        </label>
+
+                                        <input
+                                            type="text"
+                                            id="seriale"
+                                            name="seriale"
+                                            class="form-control"
+                                            maxlength="100"
+                                            placeholder="Esempio: MEZ66"
+                                            autocomplete="off"
+                                            required>
+
+                                        <div class="invalid-feedback">
+                                            Inserisci il numero seriale del mezzo.
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </fieldset>
+
+
+                            <!-- ================= INFORMAZIONE ================= -->
+                            <div class="mezzo-info mt-4">
+
+                                Il nuovo mezzo verrà registrato con lo stato
+                                iniziale previsto dal server e comparirà nella
+                                lista dei mezzi dopo il salvataggio.
+
+                            </div>
+                            <!-- =============== FINE INFORMAZIONE =============== -->
+
+
+                            <!-- ================= AZIONI ================= -->
+                            <div class="action-panel mt-5">
+
+                                <div class="d-flex flex-column flex-sm-row justify-content-end gap-3">
+
+                                    <a
+                                        href="ListaMezzi.html"
+                                        class="btn btn-outline-secondary btn-lg px-4">
+
+                                        Annulla
+                                    </a>
+
+                                    <button
+                                        type="submit"
+                                        id="pulsante-crea"
+                                        class="btn btn-primary btn-lg px-4">
+
+                                        Aggiungi mezzo
+                                    </button>
+
+                                </div>
+
+                            </div>
+                            <!-- =============== FINE AZIONI =============== -->
+
+                        </form>
+
+                    </div>
+
+                </section>
+
+            </div>
+        </div>
+
+    </main>
+    <!-- =============== FINE CONTENUTO PRINCIPALE =============== -->
+
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="site-footer text-white-50 py-4 mt-auto">
+
+        <div class="container">
+
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2">
+
+                <p class="mb-0 fw-semibold text-white">
+                    Soccorso Web
+                </p>
+
+                <p class="mb-0 small">
+                    Sistema di gestione delle richieste e delle missioni di soccorso.
+                </p>
+
+            </div>
+
+        </div>
+
+    </footer>
+    <!-- =============== FINE FOOTER =============== -->
+
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+    </script>
+
+</body>
+</html>

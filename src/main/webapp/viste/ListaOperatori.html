@@ -1,217 +1,370 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="it">
-
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1">
-
-    <title>Lista operatori</title>
+    <title>Lista operatori - Soccorso Web</title>
 
     <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
-        crossorigin="anonymous">
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <link
+        href="/soccorso_Web_SWA/css/SWAcss/ListaOperatori.css"
+        rel="stylesheet">
+        
+            <!-- Font Awesome -->
+    <link rel="stylesheet"
+	    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+	    crossorigin="anonymous"
+	    referrerpolicy="no-referrer" />
+	    
 </head>
 
-<body>
+<body class="d-flex flex-column">
 
-    <main class="container py-4">
+    <!-- ================= NAVBAR ================= -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+        <div class="container">
 
-        <h1 class="mb-4">
-            Lista operatori
-        </h1>
+            <a class="navbar-brand fw-bold" href="ListaOperatori.html">
+                Soccorso Web
+            </a>
 
-        <!-- ================= FILTRI ================= -->
-        <div class="row g-3 align-items-end mb-4">
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarPrincipale"
+                aria-controls="navbarPrincipale"
+                aria-expanded="false"
+                aria-label="Apri il menu di navigazione">
 
-            <div class="col-md-4">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-                <label
-                    for="filtro-stato-operatori"
-                    class="form-label">
+            <div class="collapse navbar-collapse" id="navbarPrincipale">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
 
-                    Filtra per stato
-                </label>
+                    <li class="nav-item">
+                        <a class="nav-link" href="ListaRichieste.html">
+                            Richieste
+                        </a>
+                    </li>
 
-                <select
-                    id="filtro-stato-operatori"
-                    class="form-select">
+                    <li class="nav-item">
+                        <a class="nav-link" href="ListaMissioni.html">
+                            Missioni
+                        </a>
+                    </li>
 
-                    <option value="tutti">
-                        Tutti
-                    </option>
+                    <li class="nav-item">
+                        <a
+                            class="nav-link active"
+                            aria-current="page"
+                            href="ListaOperatori.html">
+                            Operatori
+                        </a>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a class="nav-link" href="ListaMezzi.html">
+                            Mezzi
+                        </a>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a class="nav-link" href="ListaMateriali.html">
+                            Materiali
+                        </a>
+                    </li>
 
-                    <option value="libero">
-                        Liberi
-                    </option>
-
-                    <option value="occupato">
-                        Occupati
-                    </option>
-
-                </select>
-
-            </div>
-
-            <div class="col-md-3">
-
-                <label
-                    for="dimensione-pagina"
-                    class="form-label">
-
-                    Operatori per pagina
-                </label>
-
-                <select
-                    id="dimensione-pagina"
-                    class="form-select">
-
-                    <option value="5">
-                        5
-                    </option>
-
-                    <option
-                        value="10"
-                        selected>
-
-                        10
-                    </option>
-
-                    <option value="20">
-                        20
-                    </option>
-
-                    <option value="50">
-                        50
-                    </option>
-
-                </select>
-
-            </div>
-
-            <div class="col-md-5 text-md-end">
-
-                <span
-                    id="totale-operatori"
-                    class="text-muted">
-
-                    Operatori trovati: 0
-                </span>
-
+                </ul>
             </div>
 
         </div>
-        <!-- =============== FINE FILTRI =============== -->
+    </nav>
+    <!-- =============== FINE NAVBAR =============== -->
 
 
-        <!-- ================= TABELLA ================= -->
-        <div class="table-responsive">
+    <!-- ================= HEADER ================= -->
+    <header class="page-header text-white py-5">
+        <div class="container">
+            <div class="row align-items-center g-4">
 
-            <table
-                class="table table-bordered table-striped align-middle">
+                <div class="col-lg-8">
+                    <p class="text-uppercase fw-semibold mb-2 opacity-75">
+                        Gestione del personale
+                    </p>
 
-                <thead class="table-light">
+                    <h1 class="display-6 fw-bold mb-3">
+                        Lista operatori
+                    </h1>
 
-                    <tr>
+                    <p class="lead mb-0">
+                        Consulta gli operatori registrati, filtra l’elenco in base
+                        allo stato e apri la scheda completa di ciascun operatore.
+                    </p>
+                </div>
+                               
+                <div class="col-lg-4 text-lg-end">
+				    <a
+				        href="NuovoOperatore.html"
+				        class="btn btn-light text-primary fw-semibold px-4 py-2">
+				        <i class="fa-solid fa-plus"></i>
+				        Aggiungi
+				    </a>
+                </div>
 
-                        <th>Nome</th>
-
-                        <th>Cognome</th>
-
-                        <th>Email</th>
-
-                        <th>Data di nascita</th>
-
-                        <th>Stato</th>
-
-                        <th class="text-center">
-                            Azioni
-                        </th>
-
-                    </tr>
-
-                </thead>
-
-                <tbody id="corpo-tabella-operatori">
-
-                    <tr>
-
-                        <td
-                            colspan="6"
-                            class="text-center text-muted">
-
-                            Caricamento operatori...
-
-                        </td>
-
-                    </tr>
-
-                </tbody>
-
-            </table>
-
+            </div>
         </div>
-        <!-- =============== FINE TABELLA =============== -->
+    </header>
+    <!-- =============== FINE HEADER =============== -->
 
 
-        <!-- ================= PAGINAZIONE ================= -->
-        <nav
-            class="d-flex justify-content-center align-items-center gap-3 mt-3"
-            aria-label="Paginazione operatori">
-
-            <button
-                type="button"
-                id="pagina-precedente"
-                class="btn btn-outline-primary"
-                disabled>
-
-                Precedente
-            </button>
-
-            <span
-                id="informazioni-paginazione"
-                class="fw-semibold">
-
-                Pagina 0 di 0
-            </span>
-
-            <button
-                type="button"
-                id="pagina-successiva"
-                class="btn btn-outline-primary"
-                disabled>
-
-                Successiva
-            </button>
-
-        </nav>
-        <!-- =============== FINE PAGINAZIONE =============== -->
-
+    <!-- ================= CONTENUTO PRINCIPALE ================= -->
+    <main class="container flex-grow-1 py-5">
 
         <!-- ================= ERRORI ================= -->
         <div
             id="messaggio-errore"
-            class="alert alert-danger d-none mt-4"
-            role="alert">
+            class="alert alert-danger d-none mb-4"
+            role="alert"
+            aria-live="assertive">
         </div>
+        <!-- =============== FINE ERRORI =============== -->
+
+
+        <!-- ================= FILTRI ================= -->
+        <section
+            class="card filter-card border-0 shadow-sm mb-4"
+            aria-labelledby="titolo-filtri-operatori">
+
+            <div class="card-header bg-white border-0 px-4 pt-4 pb-0">
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-start gap-3">
+
+                    <div>
+                        <p class="section-kicker mb-1">
+                            Ricerca e visualizzazione
+                        </p>
+
+                        <h2 id="titolo-filtri-operatori" class="h4 mb-0">
+                            Filtra gli operatori
+                        </h2>
+                    </div>
+
+                    <span
+                        id="totale-operatori"
+                        class="operator-total">
+
+                        Operatori trovati: 0
+                    </span>
+
+                </div>
+            </div>
+
+            <div class="card-body px-4 py-4">
+                <div class="row g-4 align-items-end">
+
+                    <div class="col-md-6">
+
+                        <label
+                            for="filtro-stato-operatori"
+                            class="form-label fw-semibold">
+
+                            Filtra per stato
+                        </label>
+
+                        <select
+                            id="filtro-stato-operatori"
+                            class="form-select">
+
+                            <option value="tutti">
+                                Tutti gli operatori
+                            </option>
+
+                            <option value="libero">
+                                Liberi
+                            </option>
+
+                            <option value="occupato">
+                                Occupati
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <label
+                            for="dimensione-pagina"
+                            class="form-label fw-semibold">
+
+                            Operatori per pagina
+                        </label>
+
+                        <select
+                            id="dimensione-pagina"
+                            class="form-select">
+
+                            <option value="5">
+                                5
+                            </option>
+
+                            <option value="10" selected>
+                                10
+                            </option>
+
+                            <option value="20">
+                                20
+                            </option>
+
+                            <option value="50">
+                                50
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </section>
+        <!-- =============== FINE FILTRI =============== -->
+
+
+        <!-- ================= TABELLA ================= -->
+        <section
+            class="card operator-list-card border-0 shadow-sm"
+            aria-labelledby="titolo-lista-operatori">
+
+            <div class="card-header bg-white border-0 px-4 py-4">
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2">
+
+                    <div>
+                        <p class="section-kicker mb-1">
+                            Operatori disponibili
+                        </p>
+
+                        <h2 id="titolo-lista-operatori" class="h4 mb-0">
+                            Elenco degli operatori
+                        </h2>
+                    </div>
+
+                    <p class="text-muted small mb-0">
+                        Seleziona “Dettaglio” per aprire la scheda dell’operatore.
+                    </p>
+
+                </div>
+            </div>
+
+            <div class="card-body p-0">
+                <div class="table-responsive">
+
+                    <table class="table operator-table align-middle mb-0">
+
+                        <thead>
+                            <tr>
+                                <th scope="col">Nome</th>
+                                <th scope="col">Cognome</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Data di nascita</th>
+                                <th scope="col">Stato</th>
+                                <th scope="col" class="text-center">
+                                    Azioni
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="corpo-tabella-operatori">
+
+                            <tr>
+                                <td
+                                    colspan="6"
+                                    class="text-center text-muted py-5">
+
+                                    Caricamento operatori...
+                                </td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+            </div>
+
+            <!-- ================= PAGINAZIONE ================= -->
+            <div class="card-footer bg-white border-0 px-4 py-4">
+
+                <nav
+                    class="operator-pagination d-flex flex-column flex-sm-row justify-content-center align-items-center gap-3"
+                    aria-label="Paginazione operatori">
+
+                    <button
+                        type="button"
+                        id="pagina-precedente"
+                        class="btn btn-outline-primary pagination-button"
+                        disabled>
+
+                        Precedente
+                    </button>
+
+                    <span
+                        id="informazioni-paginazione"
+                        class="pagination-info">
+
+                        Pagina 0 di 0
+                    </span>
+
+                    <button
+                        type="button"
+                        id="pagina-successiva"
+                        class="btn btn-outline-primary pagination-button"
+                        disabled>
+
+                        Successiva
+                    </button>
+
+                </nav>
+
+            </div>
+            <!-- =============== FINE PAGINAZIONE =============== -->
+
+        </section>
+        <!-- =============== FINE TABELLA =============== -->
 
     </main>
+    <!-- =============== FINE CONTENUTO PRINCIPALE =============== -->
 
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="site-footer text-white-50 py-4 mt-auto">
+        <div class="container">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2">
+
+                <p class="mb-0 fw-semibold text-white">
+                    Soccorso Web
+                </p>
+
+                <p class="mb-0 small">
+                    Sistema di gestione delle richieste e delle missioni di soccorso.
+                </p>
+
+            </div>
+        </div>
+    </footer>
+    <!-- =============== FINE FOOTER =============== -->
+
+
+    <script src="/soccorso_Web_SWA/js/SWAscript/OpeScript.js"></script>
 
     <script
-        src="/soccorso_Web_SWA/js/SWAscript/OpeScript.js">
-    </script>
-
-    <script
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-        crossorigin="anonymous">
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
     </script>
 
 </body>
-
 </html>

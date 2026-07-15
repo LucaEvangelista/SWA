@@ -1,0 +1,97 @@
+@charset "UTF-8";
+body {
+    min-height: 100vh;
+    background-color: #f8f9fa;
+}
+
+.navbar-brand {
+    letter-spacing: 0.02em;
+}
+
+.page-header {
+    background: linear-gradient(135deg, #0d6efd, #084298);
+}
+
+.operator-form-card {
+    overflow: hidden;
+    border-radius: 0.75rem;
+}
+
+.section-kicker {
+    color: #0d6efd;
+    font-weight: 600;
+}
+
+.form-section {
+    min-width: 0;
+    padding: 0;
+    border: 0;
+}
+
+.form-section-title {
+    width: auto;
+    margin-bottom: 1.5rem;
+    padding: 0;
+    color: #212529;
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.form-control {
+    min-height: 3rem;
+    border-color: #ced4da;
+}
+
+.form-control:focus {
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+}
+
+.form-control::placeholder {
+    color: #adb5bd;
+}
+
+.credential-info {
+    padding: 1rem 1.1rem;
+    border-left: 4px solid #0d6efd;
+    border-radius: 0.4rem;
+    background-color: #e7f1ff;
+    color: #084298;
+}
+
+.password-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid #dee2e6;
+    border-radius: 0.65rem;
+    background-color: #f8f9fa;
+}
+
+.password-toggle .form-check-input {
+    margin-top: 0;
+}
+
+.action-panel {
+    padding: 1.25rem;
+    border: 1px solid #e4e7eb;
+    border-radius: 0.75rem;
+    background-color: #f8f9fa;
+}
+
+.site-footer {
+    background-color: #212529;
+}
+
+@media (max-width: 767.98px) {
+    .page-header {
+        text-align: center;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .action-panel .btn {
+        width: 100%;
+    }
+}

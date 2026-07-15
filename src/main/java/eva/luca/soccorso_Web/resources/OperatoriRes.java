@@ -81,8 +81,7 @@ public class OperatoriRes {
 	        }
 	    }
 	    
-	    Set<String> statiPermessi = Set.of("libero",
-	            "occupato");
+	    Set<String> statiPermessi = Set.of("libero", "occupato");
 	    
 	    if (stato != null && !statiPermessi.contains(stato)) {
 	        return Response.status(Response.Status.BAD_REQUEST)

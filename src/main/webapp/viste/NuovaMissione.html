@@ -2,228 +2,408 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <title>Crea nuova missione</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Crea nuova missione - Soccorso Web</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <link
+        href="/soccorso_Web_SWA/css/SWAcss/NuovaMissione.css"
+        rel="stylesheet">
 </head>
 
-<body class="bg-light">
+<body class="d-flex flex-column">
 
-    <div class="container-fluid mt-4">
+    <!-- ================= NAVBAR ================= -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+        <div class="container">
 
-        <!-- Titolo pagina -->
-        <div class="d-sm-flex align-items-center justify-content-between mb-4">
-
-            <div>
-                <h1 class="h3 mb-0 text-gray-800">
-                    Crea nuova missione
-                </h1>
-            </div>
-
-            <a href="ListaRichieste.html" class="btn btn-primary btn-sm shadow-sm">
-                Torna alla lista
+            <a class="navbar-brand fw-bold" href="ListaMissioni.html">
+                Soccorso Web
             </a>
 
-        </div>
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarPrincipale"
+                aria-controls="navbarPrincipale"
+                aria-expanded="false"
+                aria-label="Apri il menu di navigazione">
 
-        <!-- Messaggio caricamento -->
-        <div id="messaggio-caricamento" class="alert alert-info">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarPrincipale">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="ListaRichieste.html">
+                            Richieste
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a
+                            class="nav-link active"
+                            aria-current="page"
+                            href="ListaMissioni.html">
+                            Missioni
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="ListaOperatori.html">
+                            Operatori
+                        </a>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a class="nav-link" href="ListaMezzi.html">
+                            Mezzi
+                        </a>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a class="nav-link" href="ListaMateriali.html">
+                            Materiali
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
+
+        </div>
+    </nav>
+    <!-- =============== FINE NAVBAR =============== -->
+
+
+    <!-- ================= HEADER / LEAD ================= -->
+    <header class="page-header text-white py-5">
+        <div class="container">
+            <div class="row align-items-center g-4">
+
+                <div class="col-lg-8">
+                    <p class="text-uppercase fw-semibold mb-2 opacity-75">
+                        Gestione operativa
+                    </p>
+
+                    <h1 class="display-6 fw-bold mb-3">
+                        Crea una nuova missione
+                    </h1>
+
+                    <p class="lead mb-0">
+                        Completa i dati operativi, scegli la squadra e assegna
+                        i mezzi e i materiali necessari alla richiesta selezionata.
+                    </p>
+                </div>
+
+                <div class="col-lg-4 text-lg-end">
+                    <a
+                        href="ListaRichieste.html"
+                        class="btn btn-light btn-lg px-4">
+
+                        Torna alle richieste
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </header>
+    <!-- =============== FINE HEADER / LEAD =============== -->
+
+
+    <!-- ================= CONTENUTO PRINCIPALE ================= -->
+    <main class="container flex-grow-1 py-5">
+
+        <!-- ================= MESSAGGI ================= -->
+        <div
+            id="messaggio-caricamento"
+            class="alert alert-info shadow-sm"
+            role="status"
+            aria-live="polite">
+
             Caricamento dati in corso...
         </div>
 
-        <!-- Messaggio errore -->
-        <div id="messaggio-errore" class="alert alert-danger d-none"></div>
+        <div
+            id="messaggio-errore"
+            class="alert alert-danger d-none shadow-sm"
+            role="alert"
+            aria-live="assertive">
+        </div>
 
-        <!-- Messaggio successo -->
-        <div id="messaggio-successo" class="alert alert-success d-none"></div>
+        <div
+            id="messaggio-successo"
+            class="alert alert-success d-none shadow-sm"
+            role="status"
+            aria-live="polite">
+        </div>
+        <!-- =============== FINE MESSAGGI =============== -->
 
 
-        <!-- Form creazione missione -->
+        <!-- ================= FORM ================= -->
         <form id="form-crea-missione" class="d-none">
 
             <input type="hidden" id="richiestaId">
 
-            <!-- Riga informazioni richiesta -->
-            <div class="row">
 
-                <!-- CARD DATI RICHIESTA -->
-                <div class="col-lg-8 col-md-10">
+            <!-- ================= DATI RICHIESTA ================= -->
+            <section
+                class="card mission-card border-0 shadow-sm mb-4"
+                aria-labelledby="titolo-dati-richiesta">
 
-                    <div class="card shadow mb-4">
+                <div class="card-header bg-white border-0 px-4 pt-4 pb-0">
+                    <p class="section-kicker mb-1">
+                        Richiesta di partenza
+                    </p>
 
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">
-                                Dati richiesta
-                            </h6>
+                    <h2 id="titolo-dati-richiesta" class="h4 mb-0">
+                        Dati della richiesta
+                    </h2>
+                </div>
+
+                <div class="card-body px-4 py-4">
+
+                    <div class="request-summary mb-4">
+                        <div class="row g-4">
+
+                            <div class="col-md-4">
+                                <p class="field-label mb-1">
+                                    ID richiesta
+                                </p>
+
+                                <p id="richiesta-id" class="field-value mb-0"></p>
+                            </div>
+
+                            <div class="col-md-4">
+                                <p class="field-label mb-1">
+                                    Nome persona
+                                </p>
+
+                                <p id="richiesta-nome" class="field-value mb-0"></p>
+                            </div>
+
+                            <div class="col-md-4">
+                                <p class="field-label mb-1">
+                                    Fase
+                                </p>
+
+                                <p id="richiesta-fase" class="field-value mb-0"></p>
+                            </div>
+
+                            <div class="col-12">
+                                <p class="field-label mb-1">
+                                    Email
+                                </p>
+
+                                <p id="richiesta-email" class="field-value mb-0"></p>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="row g-4">
+
+                        <div class="col-lg-7">
+                            <label for="obiettivo" class="form-label fw-semibold">
+                                Obiettivo della missione
+                            </label>
+
+                            <textarea
+                                id="obiettivo"
+                                class="form-control"
+                                rows="5"
+                                placeholder="Descrivi l’obiettivo operativo della missione"
+                                required></textarea>
                         </div>
 
-                        <div class="card-body">
+                        <div class="col-lg-5">
+                            <label for="posizione" class="form-label fw-semibold">
+                                Posizione della missione
+                            </label>
 
-                            <div class="row mb-3">
+                            <input
+                                type="text"
+                                id="posizione"
+                                class="form-control"
+                                placeholder="Inserisci il luogo dell’intervento"
+                                required>
 
-                                <div class="col-md-4">
-                                    <strong>ID richiesta:</strong>
-                                    <p id="richiesta-id" class="mb-0"></p>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <strong>Nome persona:</strong>
-                                    <p id="richiesta-nome" class="mb-0"></p>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <strong>Fase:</strong>
-                                    <p id="richiesta-fase" class="mb-0"></p>
-                                </div>
-
-                            </div>
-
-                            <div class="mb-3">
-                                <strong>Email:</strong>
-                                <p id="richiesta-email" class="mb-0"></p>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="obiettivo" class="form-label">
-                                    <strong>Obiettivo missione:</strong>
-                                </label>
-                                <textarea id="obiettivo"
-                                          class="form-control"
-                                          rows="3"
-                                          required></textarea>
-                            </div>
-
-                            <div class="mb-0">
-                                <label for="posizione" class="form-label">
-                                    <strong>Posizione missione:</strong>
-                                </label>
-                                <input type="text"
-                                       id="posizione"
-                                       class="form-control"
-                                       required>
-                            </div>
-
+                            <p class="form-text mb-0">
+                                Indica un indirizzo o un riferimento utile alla squadra.
+                            </p>
                         </div>
 
                     </div>
 
                 </div>
 
-            </div>
+            </section>
+            <!-- =============== FINE DATI RICHIESTA =============== -->
 
 
-            <!-- Riga squadra -->
-            <div class="row">
+            <!-- ================= SQUADRA ================= -->
+            <section
+                class="card mission-card border-0 shadow-sm mb-4"
+                aria-labelledby="titolo-squadra">
 
-                <div class="col-lg-8 col-md-10">
+                <div class="card-header bg-white border-0 px-4 pt-4 pb-0">
+                    <p class="section-kicker mb-1">
+                        Personale operativo
+                    </p>
 
-                    <div class="card shadow mb-4">
+                    <h2 id="titolo-squadra" class="h4 mb-0">
+                        Squadra da assegnare
+                    </h2>
+                </div>
 
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">
-                                Squadra da assegnare
-                            </h6>
-                        </div>
+                <div class="card-body px-4 py-4">
 
-                        <div class="card-body">
+                    <label for="squadraId" class="form-label fw-semibold">
+                        Seleziona una squadra disponibile
+                    </label>
 
-                            <div class="form-group">
-                                <label for="squadraId" class="form-label">
-                                    Squadra:
-                                </label>
+                    <select
+                        id="squadraId"
+                        class="form-select"
+                        required>
 
-                                <select id="squadraId"
-                                        class="form-control"
-                                        required>
-                                    <option value="">
-                                        -- Seleziona una squadra --
-                                    </option>
-                                </select>
-                            </div>
+                        <option value="">
+                            -- Seleziona una squadra --
+                        </option>
+                    </select>
 
-                        </div>
-
-                    </div>
+                    <p class="form-text mb-0">
+                        Sono selezionabili soltanto le squadre disponibili.
+                    </p>
 
                 </div>
 
-            </div>
+            </section>
+            <!-- =============== FINE SQUADRA =============== -->
 
 
-            <!-- Riga mezzi/materiali -->
-            <div class="row">
+            <!-- ================= MEZZI E MATERIALI ================= -->
+            <div class="row g-4 mb-4">
 
-                <!-- CARD MEZZI -->
                 <div class="col-lg-6">
+                    <section
+                        class="card mission-card resource-card border-0 shadow-sm h-100"
+                        aria-labelledby="titolo-mezzi">
 
-                    <div class="card shadow mb-4">
+                        <div class="card-header bg-white border-0 px-4 pt-4 pb-0">
+                            <p class="section-kicker mb-1">
+                                Risorse operative
+                            </p>
 
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">
+                            <h2 id="titolo-mezzi" class="h4 mb-0">
                                 Mezzi da assegnare
-                            </h6>
+                            </h2>
                         </div>
 
-                        <div class="card-body" id="lista-mezzi">
+                        <div
+                            id="lista-mezzi"
+                            class="card-body resource-list px-4 py-4">
+
                             <p class="text-muted mb-0">
                                 Caricamento mezzi...
                             </p>
                         </div>
 
-                    </div>
-
+                    </section>
                 </div>
 
 
-                <!-- CARD MATERIALI -->
                 <div class="col-lg-6">
+                    <section
+                        class="card mission-card resource-card border-0 shadow-sm h-100"
+                        aria-labelledby="titolo-materiali">
 
-                    <div class="card shadow mb-4">
+                        <div class="card-header bg-white border-0 px-4 pt-4 pb-0">
+                            <p class="section-kicker mb-1">
+                                Dotazioni necessarie
+                            </p>
 
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">
+                            <h2 id="titolo-materiali" class="h4 mb-0">
                                 Materiali da assegnare
-                            </h6>
+                            </h2>
                         </div>
 
-                        <div class="card-body" id="lista-materiali">
+                        <div
+                            id="lista-materiali"
+                            class="card-body resource-list px-4 py-4">
+
                             <p class="text-muted mb-0">
                                 Caricamento materiali...
                             </p>
                         </div>
 
-                    </div>
-
+                    </section>
                 </div>
 
             </div>
+            <!-- =============== FINE MEZZI E MATERIALI =============== -->
 
 
-            <!-- Pulsanti -->
-            <div class="d-flex justify-content-end mb-4">
+            <!-- ================= AZIONI ================= -->
+            <section class="action-panel shadow-sm">
+                <div class="d-flex flex-column flex-sm-row justify-content-end gap-3">
 
-                <a id="btn-annulla"
-                   href="ListaRichieste.html"
-                   class="btn btn-secondary me-2">
-                    Annulla
-                </a>
+                    <a
+                        id="btn-annulla"
+                        href="ListaRichieste.html"
+                        class="btn btn-outline-secondary btn-lg px-4">
 
-                <button id="btn-crea-missione"
+                        Annulla
+                    </a>
+
+                    <button
+                        id="btn-crea-missione"
                         type="submit"
-                        class="btn btn-primary">
-                    Crea missione
-                </button>
+                        class="btn btn-primary btn-lg px-4">
 
-            </div>
+                        Crea missione
+                    </button>
+
+                </div>
+            </section>
+            <!-- =============== FINE AZIONI =============== -->
 
         </form>
+        <!-- =============== FINE FORM =============== -->
 
-    </div>
+    </main>
+    <!-- =============== FINE CONTENUTO PRINCIPALE =============== -->
 
 
-    <!-- JS -->
+    <!-- ================= FOOTER ================= -->
+    <footer class="site-footer text-white-50 py-4 mt-auto">
+        <div class="container">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2">
+
+                <p class="mb-0 fw-semibold text-white">
+                    Soccorso Web
+                </p>
+
+                <p class="mb-0 small">
+                    Sistema di gestione delle richieste e delle missioni di soccorso.
+                </p>
+
+            </div>
+        </div>
+    </footer>
+    <!-- =============== FINE FOOTER =============== -->
+
+
     <script src="/soccorso_Web_SWA/js/SWAscript/NuovaMissione.js"></script>
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+    </script>
 
 </body>
 </html>

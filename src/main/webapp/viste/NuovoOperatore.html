@@ -2,18 +2,17 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <title>Nuovo operatore</title>
+    <title>Nuovo operatore - Soccorso Web</title>
 
     <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-    >
+        rel="stylesheet">
+
+    <link
+        href="/soccorso_Web_SWA/css/SWAcss/NuovoOperatore.css"
+        rel="stylesheet">
 
     <script
         src="/soccorso_Web_SWA/js/SWAscript/NuovoOperatore.js"
@@ -21,213 +20,407 @@
     </script>
 </head>
 
-<body class="bg-light">
+<body class="d-flex flex-column">
 
-    <main class="container py-5">
+    <!-- ================= NAVBAR ================= -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+        <div class="container">
+
+            <a class="navbar-brand fw-bold" href="ListaOperatori.html">
+                Soccorso Web
+            </a>
+
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarPrincipale"
+                aria-controls="navbarPrincipale"
+                aria-expanded="false"
+                aria-label="Apri il menu di navigazione">
+
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarPrincipale">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="ListaRichieste.html">
+                            Richieste
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="ListaMissioni.html">
+                            Missioni
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="ListaMezzi.html">
+                            Mezzi
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="ListaMateriali.html">
+                            Materiali
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a
+                            class="nav-link active"
+                            aria-current="page"
+                            href="ListaOperatori.html">
+                            Operatori
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
+
+        </div>
+    </nav>
+    <!-- =============== FINE NAVBAR =============== -->
+
+
+    <!-- ================= HEADER / LEAD ================= -->
+    <header class="page-header text-white py-5">
+        <div class="container">
+            <div class="row align-items-center g-4">
+
+                <div class="col-lg-8">
+                    <p class="text-uppercase fw-semibold mb-2 opacity-75">
+                        Gestione del personale
+                    </p>
+
+                    <h1 class="display-6 fw-bold mb-3">
+                        Crea un nuovo operatore
+                    </h1>
+
+                    <p class="lead mb-0">
+                        Inserisci i dati anagrafici e le credenziali temporanee
+                        per registrare un nuovo operatore nel sistema.
+                    </p>
+                </div>
+
+                <div class="col-lg-4 text-lg-end">
+                    <a
+                        href="ListaOperatori.html"
+                        class="btn btn-light btn-lg px-4">
+
+                        Torna agli operatori
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </header>
+    <!-- =============== FINE HEADER / LEAD =============== -->
+
+
+    <!-- ================= CONTENUTO PRINCIPALE ================= -->
+    <main class="container flex-grow-1 py-5">
 
         <div class="row justify-content-center">
+            <div class="col-12 col-xl-9">
 
-            <div class="col-12 col-md-9 col-lg-7">
+                <section
+                    class="card operator-form-card border-0 shadow-sm"
+                    aria-labelledby="titolo-form-operatore">
 
-                <div class="card shadow-sm border-0">
+                    <div class="card-header bg-white border-0 px-4 pt-4 pb-0">
 
-                    <div class="card-header bg-primary text-white py-3">
-                        <h1 class="h4 mb-0">Creazione nuovo operatore</h1>
+                        <p class="section-kicker mb-1">
+                            Nuova registrazione
+                        </p>
+
+                        <h2 id="titolo-form-operatore" class="h4 mb-0">
+                            Dati del nuovo operatore
+                        </h2>
+
+                        <p class="text-muted mt-2 mb-0">
+                            I campi contrassegnati come obbligatori devono essere
+                            compilati prima dell’invio.
+                        </p>
+
                     </div>
 
-                    <div class="card-body p-4">
+                    <div class="card-body px-4 py-4">
 
-                        
+                        <!-- ================= MESSAGGIO ================= -->
                         <div
                             id="messaggio"
-                            class="alert d-none"
-                            role="alert">
+                            class="alert d-none mb-4"
+                            role="alert"
+                            aria-live="polite">
                         </div>
+                        <!-- =============== FINE MESSAGGIO =============== -->
+
 
                         <form id="form-nuovo-operatore" novalidate>
 
-                            <div class="row">
+                            <!-- ================= DATI ANAGRAFICI ================= -->
+                            <fieldset class="form-section">
 
-                                <!-- Nome -->
-                                <div class="col-md-6 mb-3">
-                                    <label
-                                        for="nome"
-                                        class="form-label">
-                                        Nome
-                                    </label>
+                                <legend class="form-section-title">
+                                    Dati anagrafici
+                                </legend>
+
+                                <div class="row g-4">
+
+                                    <div class="col-md-6">
+
+                                        <label
+                                            for="nome"
+                                            class="form-label fw-semibold">
+
+                                            Nome
+                                        </label>
+
+                                        <input
+                                            type="text"
+                                            id="nome"
+                                            name="nome"
+                                            class="form-control"
+                                            maxlength="100"
+                                            autocomplete="given-name"
+                                            placeholder="Inserisci il nome"
+                                            required>
+
+                                        <div class="invalid-feedback">
+                                            Inserisci il nome dell’operatore.
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="col-md-6">
+
+                                        <label
+                                            for="cognome"
+                                            class="form-label fw-semibold">
+
+                                            Cognome
+                                        </label>
+
+                                        <input
+                                            type="text"
+                                            id="cognome"
+                                            name="cognome"
+                                            class="form-control"
+                                            maxlength="100"
+                                            autocomplete="family-name"
+                                            placeholder="Inserisci il cognome"
+                                            required>
+
+                                        <div class="invalid-feedback">
+                                            Inserisci il cognome dell’operatore.
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="col-md-6">
+
+                                        <label
+                                            for="data-nascita"
+                                            class="form-label fw-semibold">
+
+                                            Data di nascita
+                                        </label>
+
+                                        <input
+                                            type="date"
+                                            id="data-nascita"
+                                            name="dataNascita"
+                                            class="form-control"
+                                            autocomplete="bday"
+                                            required>
+
+                                        <div class="invalid-feedback">
+                                            Inserisci la data di nascita.
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="col-md-6">
+
+                                        <label
+                                            for="email"
+                                            class="form-label fw-semibold">
+
+                                            Email
+                                        </label>
+
+                                        <input
+                                            type="email"
+                                            id="email"
+                                            name="email"
+                                            class="form-control"
+                                            maxlength="255"
+                                            autocomplete="email"
+                                            placeholder="nome@esempio.it"
+                                            required>
+
+                                        <div class="invalid-feedback">
+                                            Inserisci un indirizzo email valido.
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </fieldset>
+                            <!-- =============== FINE DATI ANAGRAFICI =============== -->
+
+
+                            <!-- ================= CREDENZIALI ================= -->
+                            <fieldset class="form-section mt-5">
+
+                                <legend class="form-section-title">
+                                    Credenziali temporanee
+                                </legend>
+
+                                <div class="credential-info mb-4">
+                                    La password sarà utilizzata dall’operatore per
+                                    effettuare il primo accesso al sistema.
+                                </div>
+
+                                <div class="row g-4">
+
+                                    <div class="col-md-6">
+
+                                        <label
+                                            for="passkey"
+                                            class="form-label fw-semibold">
+
+                                            Password temporanea
+                                        </label>
+
+                                        <input
+                                            type="password"
+                                            id="passkey"
+                                            name="passkey"
+                                            class="form-control"
+                                            autocomplete="new-password"
+                                            placeholder="Inserisci la password"
+                                            required>
+
+                                        <div class="invalid-feedback">
+                                            Inserisci una password temporanea.
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="col-md-6">
+
+                                        <label
+                                            for="conferma-passkey"
+                                            class="form-label fw-semibold">
+
+                                            Conferma password
+                                        </label>
+
+                                        <input
+                                            type="password"
+                                            id="conferma-passkey"
+                                            name="confermaPasskey"
+                                            class="form-control"
+                                            autocomplete="new-password"
+                                            placeholder="Ripeti la password"
+                                            required>
+
+                                        <div class="invalid-feedback">
+                                            Conferma la password temporanea.
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="form-check password-toggle mt-4">
 
                                     <input
-                                        type="text"
-                                        id="nome"
-                                        name="nome"
-                                        class="form-control"
-                                        maxlength="100"
-                                        autocomplete="given-name"
-                                        required>
+                                        type="checkbox"
+                                        id="mostra-password"
+                                        class="form-check-input">
 
-                                    <div class="invalid-feedback">
-                                        Inserisci il nome dell’operatore.
-                                    </div>
-                                </div>
-
-                                
-                                <div class="col-md-6 mb-3">
                                     <label
-                                        for="cognome"
-                                        class="form-label">
-                                        Cognome
+                                        for="mostra-password"
+                                        class="form-check-label">
+
+                                        Mostra le password inserite
                                     </label>
 
-                                    <input
-                                        type="text"
-                                        id="cognome"
-                                        name="cognome"
-                                        class="form-control"
-                                        maxlength="100"
-                                        autocomplete="family-name"
-                                        required>
+                                </div>
 
-                                    <div class="invalid-feedback">
-                                        Inserisci il cognome dell’operatore.
-                                    </div>
+                            </fieldset>
+                            <!-- =============== FINE CREDENZIALI =============== -->
+
+
+                            <!-- ================= AZIONI ================= -->
+                            <div class="action-panel mt-5">
+
+                                <div class="d-flex flex-column flex-sm-row justify-content-end gap-3">
+
+                                    <button
+                                        type="button"
+                                        class="btn btn-outline-secondary btn-lg px-4"
+                                        onclick="history.back()">
+
+                                        Indietro
+                                    </button>
+
+                                    <button
+                                        type="submit"
+                                        id="pulsante-crea"
+                                        class="btn btn-primary btn-lg px-4">
+
+                                        Crea operatore
+                                    </button>
+
                                 </div>
 
                             </div>
-
-                            
-                            <div class="mb-3">
-                                <label
-                                    for="data-nascita"
-                                    class="form-label">
-                                    Data di nascita
-                                </label>
-
-                                <input
-                                    type="date"
-                                    id="data-nascita"
-                                    name="dataNascita"
-                                    class="form-control"
-                                    autocomplete="bday"
-                                    required>
-
-                                <div class="invalid-feedback">
-                                    Inserisci la data di nascita.
-                                </div>
-                            </div>
-
-                            
-                            <div class="mb-3">
-                                <label
-                                    for="email"
-                                    class="form-label">
-                                    Email
-                                </label>
-
-                                <input
-                                    type="email"
-                                    id="email"
-                                    name="email"
-                                    class="form-control"
-                                    maxlength="255"
-                                    autocomplete="email"
-                                    required>
-
-                                <div class="invalid-feedback">
-                                    Inserisci un indirizzo email valido.
-                                </div>
-                            </div>
-
-                            <div class="row">
-
-                                
-                                <div class="col-md-6 mb-3">
-                                    <label
-                                        for="passkey"
-                                        class="form-label">
-                                        Password temporanea
-                                    </label>
-
-                                    <input
-                                        type="password"
-                                        id="passkey"
-                                        name="passkey"
-                                        class="form-control"
-                                        autocomplete="new-password"
-                                        required>
-
-                                    <div class="invalid-feedback">
-                                        Inserisci una password temporanea.
-                                    </div>
-                                </div>
-
-                               
-                                <div class="col-md-6 mb-3">
-                                    <label
-                                        for="conferma-passkey"
-                                        class="form-label">
-                                        Conferma password
-                                    </label>
-
-                                    <input
-                                        type="password"
-                                        id="conferma-passkey"
-                                        name="confermaPasskey"
-                                        class="form-control"
-                                        autocomplete="new-password"
-                                        required>
-
-                                    <div class="invalid-feedback">
-                                        Conferma la password temporanea.
-                                    </div>
-                                </div>
-
-                            </div>
-
-                            
-                            <div class="form-check mb-4">
-
-                                <input
-                                    type="checkbox"
-                                    id="mostra-password"
-                                    class="form-check-input">
-
-                                <label
-                                    for="mostra-password"
-                                    class="form-check-label">
-                                    Mostra password
-                                </label>
-
-                            </div>
-
-                            <div class="d-flex justify-content-between gap-2">
-
-                                <button
-                                    type="button"
-                                    class="btn btn-outline-secondary"
-                                    onclick="history.back()">
-                                    Indietro
-                                </button>
-
-                                <button
-                                    type="submit"
-                                    id="pulsante-crea"
-                                    class="btn btn-primary">
-                                    Crea operatore
-                                </button>
-
-                            </div>
+                            <!-- =============== FINE AZIONI =============== -->
 
                         </form>
 
                     </div>
 
-                </div>
+                </section>
 
             </div>
-
         </div>
 
     </main>
+    <!-- =============== FINE CONTENUTO PRINCIPALE =============== -->
+
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="site-footer text-white-50 py-4 mt-auto">
+        <div class="container">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2">
+
+                <p class="mb-0 fw-semibold text-white">
+                    Soccorso Web
+                </p>
+
+                <p class="mb-0 small">
+                    Sistema di gestione delle richieste e delle missioni di soccorso.
+                </p>
+
+            </div>
+        </div>
+    </footer>
+    <!-- =============== FINE FOOTER =============== -->
+
 
     <script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
