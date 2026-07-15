@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Logout - Soccorso Web</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-start: #4e73df;
+            --primary-end: #224abe;
+            --text-dark: #3a3b45;
+            --text-muted: #858796;
+        }
+
+        html,
+        body {
+            min-height: 100%;
+        }
+
+        body {
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(
+                180deg,
+                var(--primary-start) 10%,
+                var(--primary-end) 100%
+            );
+            background-attachment: fixed;
+        }
+
+        .logout-wrapper {
+            min-height: 100vh;
+            display: flex;
+            align-items: flex-start;
+            padding-top: 3rem;
+            padding-bottom: 3rem;
+        }
+
+        .logout-card {
+            overflow: hidden;
+            border: 0;
+            border-radius: 0.65rem;
+            box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.2);
+        }
+
+        .logout-card .card-body {
+            padding: 3rem;
+        }
+
+        .logout-title {
+            color: var(--text-dark);
+        }
+
+        .logout-subtitle {
+            color: var(--text-muted);
+        }
+
+        .logout-icon {
+            width: 4.5rem;
+            height: 4.5rem;
+            margin: 0 auto 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background-color: rgba(220, 53, 69, 0.1);
+            color: #dc3545;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .btn-user {
+            min-height: 3.15rem;
+            border-radius: 10rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        @media (max-width: 575.98px) {
+            .logout-wrapper {
+                padding-top: 1.5rem;
+                padding-bottom: 1.5rem;
+            }
+
+            .logout-card .card-body {
+                padding: 2rem 1.5rem;
+            }
+        }
+    </style>
+
+    <script src="../js/SWAscript/Logout.js" defer></script>
+</head>
+
+<body>
+
+<main class="container logout-wrapper">
+
+    <div class="row justify-content-center w-100 m-0">
+
+        <div class="col-xl-5 col-lg-6 col-md-8 col-sm-10">
+
+            <div class="card logout-card my-3">
+
+                <div class="card-body">
+
+                    <div class="text-center">
+
+                        <div class="logout-icon" aria-hidden="true">
+                            &#10140;
+                        </div>
+
+                        <h1 class="h4 logout-title mb-2">
+                            Vuoi effettuare il logout?
+                        </h1>
+
+                        <p class="logout-subtitle mb-4">
+                            Uscendo dovrai inserire nuovamente le credenziali
+                            per accedere alle pagine riservate.
+                        </p>
+
+                    </div>
+
+                    <!-- Contenitore dei messaggi di errore -->
+                    <div
+                        id="messaggio-logout"
+                        class="alert d-none"
+                        role="alert"
+                        aria-live="polite">
+                    </div>
+
+                    <!-- Pulsante che esegue il logout -->
+                    <button
+                        type="button"
+                        id="pulsante-logout"
+                        class="btn btn-danger btn-user w-100 mb-3">
+
+                        <span id="testo-logout">
+                            Esci dall'account
+                        </span>
+
+                        <span
+                            id="spinner-logout"
+                            class="spinner-border spinner-border-sm ms-2 d-none"
+                            aria-hidden="true">
+                        </span>
+
+                    </button>
+
+                    <!-- Pulsante che annulla il logout -->
+                    <button
+                        type="button"
+                        id="pulsante-indietro"
+                        class="btn btn-outline-primary btn-user w-100">
+
+                        Torna indietro
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</main>
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+</script>
+
+</body>
+</html>
