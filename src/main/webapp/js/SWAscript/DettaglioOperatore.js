@@ -132,8 +132,7 @@ function caricaSelectPatenti(operatoreId) {
             select.appendChild(optionDefault);
 
             /*
-                Creo un Set con gli ID delle patenti già possedute.
-                Così posso controllare velocemente quali patenti escludere.
+                Set con gli ID delle patenti già possedute.
             */
             var idPatentiOperatore = new Set();
 
@@ -142,8 +141,7 @@ function caricaSelectPatenti(operatoreId) {
             });
 
             /*
-                Filtro tutte le patenti, tenendo solo quelle che
-                NON sono già presenti tra le patenti dell'operatore.
+                Filtro per le patenti, tenendo solo quelle non possedute
             */
             var patentiDisponibili = tuttePatenti.filter(function (patente) {
                 return !idPatentiOperatore.has(Number(patente.id));
@@ -246,6 +244,7 @@ function caricaSelectPatenti(operatoreId) {
    }
    
    /* ======================= FINE AGGIUNTA PATENTE ======================= */
+   
    /* ======================= SELECT PER AGGIUNGERE ABILITA ======================= */
 
    function caricaSelectAbilita(operatoreId) {
@@ -311,8 +310,7 @@ function caricaSelectPatenti(operatoreId) {
                });
 
                /*
-                * Manteniamo solamente le abilità non ancora
-                * associate all'operatore.
+                * Filtro per le abilità, tenendo solo quelle non possedute
                 */
                var abilitaDisponibili = tutteAbilita.filter(function (abilita) {
                    return !idAbilitaOperatore.has(Number(abilita.id));
@@ -438,10 +436,6 @@ function caricaSelectPatenti(operatoreId) {
 
                document.getElementById("select-abilita").value = "";
 
-               /*
-                * Aggiorna sia la lista visibile sia la select,
-                * rimuovendo l'abilità appena assegnata.
-                */
                caricaAbilita(operatoreId);
                caricaSelectAbilita(operatoreId);
            })
