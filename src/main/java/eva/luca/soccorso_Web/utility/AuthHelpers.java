@@ -7,6 +7,11 @@ import jakarta.ws.rs.core.UriInfo;
 
 public class AuthHelpers {
 	
+	/* è una classe intermedia che collega:
+		la risorsa AuthRes;
+		il DAO dell'autenticazione;
+		la classe che gestisce i JWT.*/
+	
     private static AuthHelpers instance = null;
     private final JWTHelpers jwt;
     private final AuthDao serviceA = new AuthDao();

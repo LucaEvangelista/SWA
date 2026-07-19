@@ -100,13 +100,83 @@ function mostraRichiesta(richiesta) {
 	}
 	
 	// controllo per pulsante vai a missione
-	var contenitoreCreaMissione = document.getElementById("contenitore-vai-missione");
+	var contenitoreVaiMissione =
+	    document.getElementById("contenitore-vai-missione");
 
-	if (richiesta.fase === "rifiutata" || richiesta.fase === "attiva") {
-	    contenitoreCreaMissione.classList.add("d-none");
+	var btnVaiMissione =
+	    document.getElementById("btn-vai-missione");
+
+	// La missione esiste quando la richiesta è in esecuzione o terminata
+	if (
+	    richiesta.fase === "in esecuzione" ||
+	    richiesta.fase === "terminata"
+	) {
+	    contenitoreVaiMissione.classList.remove("d-none");
+
+	    btnVaiMissione.onclick = function () {
+	        vaiAlDettaglioMissione(richiesta.id);
+	    };
+
 	} else {
-	    contenitoreCreaMissione.classList.remove("d-none");
+	    contenitoreVaiMissione.classList.add("d-none");
 	}
+}
+
+function vaiAlDettaglioMissione(idRichiesta) {
+
+    var url = "/soccorso_Web_SWA/rest/missioni/list";
+
+    fetch(url, {
+        method: "GET",
+        headers: {
+            "Accept": "application/json"
+        },
+        credentials: "same-origin"
+    })
+    .then(function (response) {
+
+        return response.json().then(function (data) {
+
+            if (!response.ok) {
+                throw new Error(
+                    data.message ||
+                    "Errore durante il caricamento delle missioni."
+                );
+            }
+
+            return data;
+        });
+    })
+    .then(function (missioni) {
+
+        if (!Array.isArray(missioni)) {
+            throw new Error("La risposta del server non contiene una lista di missioni.");
+        }
+
+        // Cerca la missione collegata alla richiesta visualizzata
+        var missioneTrovata = missioni.find(function (missione) {
+            return Number(missione.richiestaRif) === Number(idRichiesta);
+        });
+
+        if (missioneTrovata === undefined) {
+            throw new Error(
+                "Non è stata trovata una missione associata a questa richiesta."
+            );
+        }
+
+        // Apre la pagina del dettaglio missione
+        window.location.href =
+            "DettagliMissione.html?id=" +
+            encodeURIComponent(missioneTrovata.missioneId);
+    })
+    .catch(function (errore) {
+        console.error(
+            "Errore durante la ricerca della missione:",
+            errore
+        );
+
+        mostraErrore(errore.message);
+    });
 }
 
 function mostraErrore(messaggio) {

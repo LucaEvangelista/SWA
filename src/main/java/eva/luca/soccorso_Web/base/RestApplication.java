@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.jakarta.rs.json.JacksonJsonProvider;
 
+import eva.luca.soccorso_Web.resources.AdminRes;
 import eva.luca.soccorso_Web.resources.AuthRes;
 import eva.luca.soccorso_Web.resources.CompetenzeRes;
 import eva.luca.soccorso_Web.resources.ConvalidaRes;
@@ -43,6 +44,8 @@ import jakarta.ws.rs.core.Application;
 	        )
 	    }
 	)
+
+//configurazione JWT per swagger
 	@SecurityScheme(
 	    name = "bearerAuth",
 	    type = SecuritySchemeType.HTTP,
@@ -72,8 +75,10 @@ public class RestApplication extends Application{
 		c.add(AuthRes.class);
 		c.add(AuthLoggedFilter.class);
 		c.add(CompetenzeRes.class);
+		c.add(AdminRes.class);
 		
 		c.add(OpenApiResource.class);
+		
 		
 //        aggiungiamo il provider Jackson per poter
 //        usare i suoi servizi di serializzazione e 

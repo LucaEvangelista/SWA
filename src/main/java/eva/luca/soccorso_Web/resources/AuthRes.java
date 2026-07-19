@@ -30,10 +30,13 @@ public class AuthRes {
             @FormParam("password") String password) {
 		
 		try {
+			//controllo dell'esistenza dell'utente
 			LoggedUser user = AuthHelpers.getInstance().authenticateUser(email, password);
 			if(user != null) {
+				//creazione del token
                 String authToken = AuthHelpers.getInstance().issueToken(uriinfo, user.getEmail(), user.getRuolo());
                 return Response.ok(authToken)
+                		//il token viene restituito in due modi: autorization header e cookie
                         .cookie(new NewCookie.Builder("token").value(authToken).path("/").build())
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + authToken).build();
 			}
@@ -50,13 +53,15 @@ public class AuthRes {
 	@DELETE
 	@Path("logout")
 	@Logged
+	//non lo distrugge, lo rende inutilizzabile
 	public Response logout(@Context ContainerRequestContext req) {
         //proprietà estratta dall'authorization header 
         //e iniettata nella request dal filtro di autenticazione
         String token = (String) req.getProperty("token");
+        //il jwt non può essere modificato
         AuthHelpers.getInstance().revokeToken(token);
         return Response.noContent()
-                //eliminaimo anche il cookie con il token
+                //eliminazione del cookie con il token
                 .cookie(new NewCookie.Builder("token").value("").path("/").maxAge(0).build())
                 .header(HttpHeaders.AUTHORIZATION, "").build();
 	}
@@ -64,10 +69,13 @@ public class AuthRes {
 	@GET
 	@Path("refresh")
 	@Logged
+	//crea un nuovo token per l'utente già autenticato
 	public Response refresh(@Context ContainerRequestContext req, @Context UriInfo uriinfo) {
         //proprietà iniettata nella request dal filtro di autenticazione
+		//prende le inormazioni
         String mail = (String) req.getProperty("user");
         String ruolo = (String) req.getProperty("ruolo");
+        //crea un nuovo token con esse
         String newtoken = AuthHelpers.getInstance().issueToken(uriinfo, mail, ruolo);
         return Response.ok(newtoken)
                 .cookie(new NewCookie.Builder("token").value(newtoken).path("/").build())

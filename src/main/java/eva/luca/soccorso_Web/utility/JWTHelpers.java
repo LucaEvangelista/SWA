@@ -20,6 +20,7 @@ import eva.luca.soccorso_Web.models.TokenData;
 
 
 public class JWTHelpers {
+	//Questa classe si occupa realmente dei token JWT
 	
 	 private static JWTHelpers instance = null;
 	    private SecretKey jwtKey = null;
@@ -39,14 +40,18 @@ public class JWTHelpers {
 	    public SecretKey getJwtKey() {
 	        return jwtKey;
 	    }
+	    
+	    //Un JWT è una stringa composta normalmente da tre parti: header.payload.signature
 
 	    public TokenData validateToken(String token) {
 
+	    	 //verifica del token
 	        Jws<Claims> jwsc = Jwts.parser()
 	                .verifyWith(getJwtKey())
 	                .build()
 	                .parseSignedClaims(token);
 	        
+	        //verifica della validità
 	        if (serviceT.isBlackListed(token)) {
 				return null;
 			}
@@ -64,6 +69,12 @@ public class JWTHelpers {
 	        return new TokenData(email, ruolo);
 	    }
 
+	    /*Nel token vengono inseriti:
+			l'email dell'utente;
+			il suo ruolo;
+			la data di creazione;
+			la data di scadenza
+			e poi creato*/
 	    public String issueToken(UriInfo context, String email, String ruolo) {
 	        String token = Jwts.builder()
 	                .subject(email)

@@ -1,3 +1,4 @@
+//Serve a far sì che JavaScript segnali alcuni errori che, normalmente, verrebbero ignorati o gestiti in modo ambiguo.
 "use strict";
 
 /*
